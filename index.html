@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>The Templar's Vigil — Sir Aldren</title>
+    <meta
+      name="description"
+      content="An immersive conversation with Sir Aldren, a 12th-century Templar knight."
+    />
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="scene" aria-hidden="true"></div>
+    <div class="vignette" aria-hidden="true"></div>
+
+    <section class="dialogue-panel" id="dialogue-panel" aria-label="Dialogue with Sir Aldren">
+      <div class="panel-inner">
+        <div class="header-row">
+          <img
+            src="images/escudo.png"
+            alt="Templar crest"
+            class="crest"
+            id="crest"
+          />
+          <h1 class="knight-name" id="knight-name">Sir Aldren</h1>
+        </div>
+
+        <p class="knight-response" id="knight-response"></p>
+
+        <p class="status" id="status" role="status" aria-live="polite"></p>
+
+        <div class="input-row">
+          <input
+            type="text"
+            class="player-input"
+            id="player-input"
+            placeholder="Habla con el templario..."
+            autocomplete="off"
+            aria-label="Tu mensaje al templario"
+          />
+          <button class="send-btn" id="send-btn" type="button">Enviar</button>
+        </div>
+      </div>
+    </section>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

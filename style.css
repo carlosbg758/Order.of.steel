@@ -1,0 +1,274 @@
+:root {
+  --gold: #c9a64a;
+  --gold-bright: #e6c869;
+  --gold-dim: #8a6f2e;
+  --parchment: #d8c9a0;
+  --ink: #1a1208;
+  --shadow: rgba(0, 0, 0, 0.85);
+  --panel-bg: rgba(12, 9, 5, 0.82);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  font-family: "Cinzel", "Times New Roman", serif;
+  background: #000;
+  color: var(--parchment);
+}
+
+body {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+}
+
+/* --- Background ---------------------------------------------------------- */
+.scene {
+  position: fixed;
+  inset: 0;
+  background: url("images/escenario.webp") center center / cover no-repeat #050402;
+  z-index: 0;
+}
+
+.vignette {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 45vh;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.85) 0%,
+    rgba(0, 0, 0, 0.45) 35%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+/* --- Dialogue panel ------------------------------------------------------ */
+.dialogue-panel {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 860px;
+  z-index: 10;
+  padding: 0 20px 28px;
+}
+
+.panel-inner {
+  position: relative;
+  background: var(--panel-bg);
+  border: 1px solid var(--gold-dim);
+  border-bottom: none;
+  border-radius: 10px 10px 0 0;
+  padding: 22px 26px 20px;
+  box-shadow: 0 -6px 40px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(201, 166, 74, 0.25);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* golden corner flourishes */
+.panel-inner::before,
+.panel-inner::after {
+  content: "";
+  position: absolute;
+  top: -1px;
+  width: 44px;
+  height: 44px;
+  border: 2px solid var(--gold);
+  pointer-events: none;
+}
+.panel-inner::before {
+  left: -1px;
+  border-right: none;
+  border-bottom: none;
+  border-radius: 10px 0 0 0;
+}
+.panel-inner::after {
+  right: -1px;
+  border-left: none;
+  border-bottom: none;
+  border-radius: 0 10px 0 0;
+}
+
+/* --- Crest + name -------------------------------------------------------- */
+.header-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 10px;
+}
+
+.crest {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 4px rgba(201, 166, 74, 0.4));
+}
+
+.knight-name {
+  font-family: "Cinzel", serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: 0.14em;
+  color: var(--gold-bright);
+  text-transform: uppercase;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+}
+
+/* --- Response text ------------------------------------------------------- */
+.knight-response {
+  font-family: "EB Garamond", "Cinzel", "Times New Roman", serif;
+  font-size: 1.06rem;
+  line-height: 1.65;
+  color: var(--parchment);
+  min-height: 3.2em;
+  margin-bottom: 16px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+  letter-spacing: 0.01em;
+}
+
+.knight-response::first-letter {
+  font-size: 1.3em;
+  color: var(--gold-bright);
+}
+
+/* --- Loading status ------------------------------------------------------ */
+.status {
+  font-family: "EB Garamond", serif;
+  font-style: italic;
+  font-size: 0.92rem;
+  color: var(--gold);
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.4s ease, max-height 0.4s ease;
+  margin-bottom: 0;
+}
+.status.visible {
+  opacity: 1;
+  max-height: 2em;
+  margin-bottom: 12px;
+}
+
+/* --- Input row ----------------------------------------------------------- */
+.input-row {
+  display: flex;
+  gap: 12px;
+  align-items: stretch;
+}
+
+.player-input {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid var(--gold-dim);
+  border-radius: 6px;
+  padding: 12px 16px;
+  font-family: "EB Garamond", serif;
+  font-size: 1.02rem;
+  color: var(--parchment);
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.player-input::placeholder {
+  color: rgba(216, 201, 160, 0.45);
+  font-style: italic;
+}
+.player-input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 10px rgba(201, 166, 74, 0.25);
+}
+.player-input:disabled {
+  opacity: 0.5;
+}
+
+.send-btn {
+  background: linear-gradient(180deg, #2a1d10, #150f08);
+  border: 1px solid var(--gold);
+  border-radius: 6px;
+  color: var(--gold-bright);
+  font-family: "Cinzel", serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0 22px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+.send-btn:hover:not(.disabled) {
+  background: linear-gradient(180deg, #3a2818, #2a1d10);
+  box-shadow: 0 0 14px rgba(201, 166, 74, 0.35);
+  color: #fff3d0;
+}
+.send-btn:active:not(.disabled) {
+  transform: translateY(1px);
+}
+.send-btn.disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* --- Responsive ---------------------------------------------------------- */
+@media (max-width: 640px) {
+  .dialogue-panel {
+    padding: 0 10px 16px;
+  }
+  .panel-inner {
+    padding: 16px 16px 14px;
+  }
+  .crest {
+    width: 34px;
+    height: 34px;
+  }
+  .knight-name {
+    font-size: 0.98rem;
+  }
+  .knight-response {
+    font-size: 0.98rem;
+    line-height: 1.55;
+  }
+  .player-input {
+    font-size: 0.95rem;
+    padding: 10px 12px;
+  }
+  .send-btn {
+    padding: 0 14px;
+    font-size: 0.76rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .send-btn {
+    padding: 0 10px;
+    letter-spacing: 0.06em;
+  }
+}
+
+/* --- Intro fade-in ------------------------------------------------------- */
+.dialogue-panel {
+  animation: panelRise 1.2s ease-out both;
+}
+@keyframes panelRise {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
