@@ -1,53 +1,36 @@
+import { CreateMLCEngine } from "@mlc-ai/web-llm";
 import { SYSTEM_PROMPT } from "./prompts.js";
 
-// --- WebLLM integration scaffold -------------------------------------------
-// When ready to use a real model, load WebLLM in the browser:
-//
-//   import * as webllm from "https://esm.run/@mlc-ai/web-llm";
-//   const engine = await webllm.CreateMLCEngine("Llama-3.2-1B-Instruct-q4f32_1-MLC", {
-//     initProgressCallback: (p) => { setLoading(p.text || p.progress); }
-//   });
-//   const reply = await engine.chat.completions.create({
-//     messages: [
-//       { role: "system", content: SYSTEM_PROMPT },
-//       { role: "user", content: userText },
-//     ],
-//   });
-//   const text = reply.choices[0].message.content;
-//
-// For now we simulate responses so the interface can be visually tested.
+const MODEL_ID = "Llama-3.2-1B-Instruct-q4f16_1-MLC";
+const MAX_HISTORY_MESSAGES = 10;
 
-const SIMULATED_RESPONSES = [
-  "Tus palabras me encuentran en la hora quieta tras las laudes, amigo. Habla sin rodeos: ¿qué peso oprime tu espíritu este día?",
-  "He cabalgado los caminos de Antioquía hasta Acre, y he aprendido que la lengua habla más fuerte que la espada. Dime qué te inquieta.",
-  "La Regla nos manda levantarnos antes del sol y trabajar hasta las vísperas. Aun así, te escucho. ¿Qué pides a un pobre caballero del Temple?",
-  "Hablas como quien ha visto el polvo de Tierra Santa. O quizás eres nuevo en estos caminos. De cualquier modo, pregunta y responderé según Dios me dé entendimiento.",
-  "Una pregunta justa, aunque mi mente pesa con el recuerdo de hermanos caídos ante los muros de Jerusalén. Continúa, y te daré el consejo que pueda.",
-  "No soy ningún sabio, sólo un hermano consagrado a la oración y la espada. Pero si tu corazón busca la verdad, no te cerraré la puerta. Habla.",
-  "La noche se alarga y las velas menguan. Aun así, un caballero puede ceder un momento a quien busca consejo con buena fe. ¿Qué deseas saber?",
-  "Recuerdo la primera vez que vestí el manto blanco: su peso no era nada comparado con el peso del voto. Pero basta de mí. Tu pregunta, amigo.",
-];
-
-// --- DOM --------------------------------------------------------------------
 const nameEl = document.getElementById("knight-name");
 const responseEl = document.getElementById("knight-response");
 const inputEl = document.getElementById("player-input");
 const sendBtn = document.getElementById("send-btn");
 const statusEl = document.getElementById("status");
-const panelEl = document.getElementById("dialogue-panel");
-const crestEl = document.getElementById("crest");
 
-let responseIndex = 0;
+let engine = null;
+let enginePromise = null;
 
-// --- Typewriter effect ------------------------------------------------------
-function typeText(target, text, speed = 22) {
+let conversation = [
+  {
+    role: "system",
+    content: SYSTEM_PROMPT,
+  },
+];
+
+function typeText(target, text, speed = 16) {
   return new Promise((resolve) => {
     target.textContent = "";
-    let i = 0;
+
+    let index = 0;
+
     const timer = setInterval(() => {
-      target.textContent += text.charAt(i);
-      i += 1;
-      if (i >= text.length) {
+      target.textContent += text.charAt(index);
+      index += 1;
+
+      if (index >= text.length) {
         clearInterval(timer);
         resolve();
       }
@@ -55,67 +38,172 @@ function typeText(target, text, speed = 22) {
   });
 }
 
-// --- Loading / status -------------------------------------------------------
-function setLoading(message = "Despertando la memoria del templario...") {
+function setLoading(message = "Despertando la memoria del caballero...") {
   statusEl.textContent = message;
   statusEl.classList.add("visible");
 }
+
 function clearLoading() {
   statusEl.classList.remove("visible");
   statusEl.textContent = "";
 }
 
-// --- Simulated generation ---------------------------------------------------
-async function simulateResponse(userText) {
-  setLoading();
-  await new Promise((r) => setTimeout(r, 900));
+function setControlsDisabled(disabled) {
+  inputEl.disabled = disabled;
+  sendBtn.disabled = disabled;
+  sendBtn.classList.toggle("disabled", disabled);
+}
+
+function formatProgress(report) {
+  if (typeof report?.progress === "number") {
+    const percentage = Math.round(report.progress * 100);
+
+    return `Despertando los recuerdos de Sir Aldren... ${percentage}%`;
+  }
+
+  return "Despertando los recuerdos de Sir Aldren...";
+}
+
+function checkWebGPUSupport() {
+  return "gpu" in navigator;
+}
+
+async function initializeEngine() {
+  if (engine) {
+    return engine;
+  }
+
+  if (enginePromise) {
+    return enginePromise;
+  }
+
+  if (!checkWebGPUSupport()) {
+    throw new Error(
+      "Este artefacto no puede despertar en este navegador. Utiliza una versión reciente de Chrome o Edge."
+    );
+  }
+
+  setControlsDisabled(true);
+  setLoading("Despertando los recuerdos de Sir Aldren...");
+
+  enginePromise = CreateMLCEngine(MODEL_ID, {
+    initProgressCallback: (report) => {
+      setLoading(formatProgress(report));
+    },
+  })
+    .then((loadedEngine) => {
+      engine = loadedEngine;
+      clearLoading();
+      setControlsDisabled(false);
+      return engine;
+    })
+    .catch((error) => {
+      enginePromise = null;
+      clearLoading();
+      setControlsDisabled(false);
+      throw error;
+    });
+
+  return enginePromise;
+}
+
+function trimConversationHistory() {
+  const systemMessage = conversation[0];
+  const recentMessages = conversation.slice(1).slice(-MAX_HISTORY_MESSAGES);
+
+  conversation = [systemMessage, ...recentMessages];
+}
+
+async function generateResponse(userText) {
+  const activeEngine = await initializeEngine();
+
+  conversation.push({
+    role: "user",
+    content: userText,
+  });
+
+  trimConversationHistory();
+
+  setLoading("Sir Aldren medita sus palabras...");
+
+  const completion = await activeEngine.chat.completions.create({
+    messages: conversation,
+    temperature: 0.75,
+    top_p: 0.9,
+    max_tokens: 220,
+    repetition_penalty: 1.1,
+  });
+
   clearLoading();
 
-  const reply = SIMULATED_RESPONSES[responseIndex % SIMULATED_RESPONSES.length];
-  responseIndex += 1;
+  const reply =
+    completion?.choices?.[0]?.message?.content?.trim() ||
+    "El silencio pesa sobre estas piedras. Formula de nuevo tu pregunta, viajero.";
+
+  conversation.push({
+    role: "assistant",
+    content: reply,
+  });
+
+  trimConversationHistory();
+
   await typeText(responseEl, reply);
 }
 
-// --- WebLLM-ready generation (currently simulated) --------------------------
-async function generateResponse(userText) {
-  // Replace the body of this function with the WebLLM call shown above
-  // once a model engine is loaded. The UI wiring stays the same.
-  return simulateResponse(userText);
-}
-
-// --- Send handling ----------------------------------------------------------
 async function handleSend() {
   const text = inputEl.value.trim();
-  if (!text) return;
+
+  if (!text || sendBtn.disabled) {
+    return;
+  }
 
   inputEl.value = "";
-  inputEl.disabled = true;
-  sendBtn.disabled = true;
-  sendBtn.classList.add("disabled");
+  setControlsDisabled(true);
 
-  await generateResponse(text);
+  try {
+    await generateResponse(text);
+  } catch (error) {
+    console.error(error);
 
-  inputEl.disabled = false;
-  sendBtn.disabled = false;
-  sendBtn.classList.remove("disabled");
-  inputEl.focus();
+    clearLoading();
+
+    await typeText(
+      responseEl,
+      "Algo perturba mis recuerdos. Las sombras de estas piedras no me permiten responder en este momento.",
+      12
+    );
+  } finally {
+    setControlsDisabled(false);
+    inputEl.focus();
+  }
 }
 
 sendBtn.addEventListener("click", handleSend);
-inputEl.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    e.preventDefault();
+
+inputEl.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
     handleSend();
   }
 });
 
-// --- Intro line on load ----------------------------------------------------
 window.addEventListener("DOMContentLoaded", async () => {
+  nameEl.textContent = "SIR ALDREN";
+
   await typeText(
     responseEl,
-    "Por fin has llegado. Soy Sir Aldren, de la Orden del Temple. Habla, amigo: ¿qué te trae hasta este lugar?"
+    "Por fin has llegado. Soy Sir Aldren, caballero de la Orden de Acero. Algunos la conocen como Order of Steel. Habla, viajero: ¿qué te trae hasta este lugar?"
   );
-});
 
-// Keep SYSTEM_PROMPT referenced so tree-shaking does not drop it.
-window.__SYSTEM_PROMPT__ = SYSTEM_PROMPT;
+  try {
+    await initializeEngine();
+  } catch (error) {
+    console.error(error);
+
+    await typeText(
+      responseEl,
+      "Mis recuerdos permanecen dormidos. Alguna fuerza desconocida impide que mi memoria despierte.",
+      12
+    );
+  }
+});
