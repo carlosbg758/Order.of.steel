@@ -18,6 +18,23 @@ let conversation = [
   },
 ];
 
+// Mensajes inmersivos cuando ocurre cualquier problema
+const ERROR_MESSAGES = [
+  "Algo perturba estas piedras. Mis pensamientos no alcanzan aún la respuesta.",
+  "Una extraña sombra cubre mis recuerdos. Háblame de nuevo, viajero.",
+  "Los ecos de esta fortaleza guardan hoy silencio. Intentemos otra vez.",
+  "La memoria de la Order of Steel permanece velada por un instante.",
+  "No toda pregunta encuentra respuesta al primer intento. Vuelve a hablarme.",
+  "El silencio envuelve mi mente. Concédeme otro instante.",
+  "Incluso el acero necesita un respiro antes de volver al combate. Inténtalo de nuevo."
+];
+
+function randomErrorMessage() {
+  return ERROR_MESSAGES[
+    Math.floor(Math.random() * ERROR_MESSAGES.length)
+  ];
+}
+
 function typeText(target, text, speed = 16) {
   return new Promise((resolve) => {
     target.textContent = "";
@@ -67,6 +84,7 @@ async function generateResponse(userText) {
   });
 
   trimConversationHistory();
+
   setLoading("Sir Aldren medita sus palabras...");
 
   const response = await fetch(API_URL, {
@@ -84,22 +102,17 @@ async function generateResponse(userText) {
   try {
     result = await response.json();
   } catch {
-    throw new Error(
-      "El servidor ha devuelto una respuesta que no se puede interpretar."
-    );
+    throw new Error("Respuesta inválida");
   }
 
   if (!response.ok || !result?.ok) {
-    throw new Error(
-      result?.error ||
-        "La Orden no ha podido establecer contacto con Sir Aldren."
-    );
+    throw new Error("Error del servidor");
   }
 
   const reply = result.reply?.trim();
 
   if (!reply) {
-    throw new Error("Sir Aldren ha guardado silencio.");
+    throw new Error("Respuesta vacía");
   }
 
   conversation.push({
@@ -108,6 +121,7 @@ async function generateResponse(userText) {
   });
 
   trimConversationHistory();
+
   clearLoading();
 
   await typeText(responseEl, reply);
@@ -121,22 +135,19 @@ async function handleSend() {
   }
 
   inputEl.value = "";
+
   setControlsDisabled(true);
 
   try {
     await generateResponse(text);
   } catch (error) {
     console.error(error);
-    clearLoading();
 
-    const message =
-      error instanceof Error
-        ? error.message
-        : "Una fuerza desconocida ha interrumpido la conversación.";
+    clearLoading();
 
     await typeText(
       responseEl,
-      `Algo perturba estas piedras. ${message}`,
+      randomErrorMessage(),
       12
     );
   } finally {
@@ -156,10 +167,11 @@ inputEl.addEventListener("keydown", (event) => {
 
 window.addEventListener("DOMContentLoaded", async () => {
   nameEl.textContent = "SIR ALDREN";
+
   setControlsDisabled(false);
 
   await typeText(
     responseEl,
-    "Por fin has llegado. Soy Sir Aldren, caballero de la Orden de Acero, conocida como Order of Steel. Habla, viajero: ¿qué te trae hasta este lugar?"
+    "Por fin has llegado. Soy Sir Aldren, caballero de la Order of Steel. Siéntate junto a mí, viajero, y comparte aquello que inquieta tu espíritu. Escucharé tus palabras con la paciencia que solo los años conceden."
   );
 });
