@@ -206,6 +206,6 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   await typeText(
     responseEl,
-    "Por fin has llegado. Soy Sir Aldren, caballero de la Orden de Acero, conocida como Order of Steel. Habla, viajero: ¿qué te trae hasta este lugar?"
+    "Por fin has llegado. Soy Sir Aldren, caballero de Order of Steel. Habla, viajero: ¿qué te trae hasta este lugar?"
   );
 });
