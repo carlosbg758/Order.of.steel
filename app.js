@@ -1,7 +1,7 @@
 import { CreateMLCEngine } from "@mlc-ai/web-llm";
 import { SYSTEM_PROMPT } from "./prompts.js";
 
-const MODEL_ID = "Llama-3.2-1B-Instruct-q4f16_1-MLC";
+const MODEL_ID = "Llama-3.2-1B-Instruct-q4f32_1-MLC";
 const MAX_HISTORY_MESSAGES = 10;
 
 const nameEl = document.getElementById("knight-name");
