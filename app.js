@@ -20,15 +20,32 @@ if (backgroundMusic) {
     try {
       await backgroundMusic.play();
 
-      document.removeEventListener("pointerdown", startBackgroundMusic);
-      document.removeEventListener("keydown", startBackgroundMusic);
+      document.removeEventListener(
+        "pointerdown",
+        startBackgroundMusic
+      );
+
+      document.removeEventListener(
+        "keydown",
+        startBackgroundMusic
+      );
     } catch (error) {
-      console.warn("No se pudo iniciar la música:", error);
+      console.warn(
+        "No se pudo iniciar la música:",
+        error
+      );
     }
   };
 
-  document.addEventListener("pointerdown", startBackgroundMusic);
-  document.addEventListener("keydown", startBackgroundMusic);
+  document.addEventListener(
+    "pointerdown",
+    startBackgroundMusic
+  );
+
+  document.addEventListener(
+    "keydown",
+    startBackgroundMusic
+  );
 }
 
 let conversation = [
@@ -46,7 +63,7 @@ const ERROR_MESSAGES = [
   "La memoria de la Order of Steel permanece velada por un instante.",
   "No toda pregunta encuentra respuesta al primer intento. Vuelve a hablarme.",
   "El silencio envuelve mi mente. Concédeme otro instante.",
-  "Incluso el acero necesita un respiro antes de volver al combate. Inténtalo de nuevo."
+  "Incluso el acero necesita un respiro antes de volver al combate. Inténtalo de nuevo.",
 ];
 
 function randomErrorMessage() {
@@ -56,40 +73,6 @@ function randomErrorMessage() {
 }
 
 function typeText(target, text, speed = 16) {
-
-// ===============================
-// Voz de Sir Aldren (PRUEBA)
-// ===============================
-
-function speakAsAldren(text) {
-  if (!("speechSynthesis" in window)) return;
-
-  window.speechSynthesis.cancel();
-
-  const utterance = new SpeechSynthesisUtterance(text);
-
-  utterance.lang = "es-ES";
-  utterance.rate = 0.88;
-  utterance.pitch = 0.82;
-  utterance.volume = 1;
-
-  const voices = window.speechSynthesis.getVoices();
-
-  const spanishVoice =
-    voices.find(v => v.lang === "es-ES") ||
-    voices.find(v => v.lang.startsWith("es"));
-
-  if (spanishVoice) {
-    utterance.voice = spanishVoice;
-  }
-
-  window.speechSynthesis.speak(utterance);
-}
-
-window.speechSynthesis.onvoiceschanged = () => {
-  window.speechSynthesis.getVoices();
-};  
-  
   return new Promise((resolve) => {
     target.textContent = "";
     let index = 0;
@@ -106,7 +89,61 @@ window.speechSynthesis.onvoiceschanged = () => {
   });
 }
 
-function setLoading(message = "Sir Aldren medita sus palabras...") {
+// ===============================
+// Voz de Sir Aldren (PRUEBA)
+// ===============================
+
+function speakAsAldren(text) {
+  if (!("speechSynthesis" in window)) {
+    console.warn(
+      "Este navegador no admite síntesis de voz."
+    );
+
+    return;
+  }
+
+  window.speechSynthesis.cancel();
+
+  const utterance =
+    new SpeechSynthesisUtterance(text);
+
+  utterance.lang = "es-ES";
+  utterance.rate = 0.88;
+  utterance.pitch = 0.82;
+  utterance.volume = 1;
+
+  const voices =
+    window.speechSynthesis.getVoices();
+
+  const spanishVoice =
+    voices.find(
+      (voice) =>
+        voice.lang.toLowerCase() === "es-es"
+    ) ||
+    voices.find(
+      (voice) =>
+        voice.lang
+          .toLowerCase()
+          .startsWith("es")
+    );
+
+  if (spanishVoice) {
+    utterance.voice = spanishVoice;
+  }
+
+  window.speechSynthesis.speak(utterance);
+}
+
+if ("speechSynthesis" in window) {
+  window.speechSynthesis.onvoiceschanged =
+    () => {
+      window.speechSynthesis.getVoices();
+    };
+}
+
+function setLoading(
+  message = "Sir Aldren medita sus palabras..."
+) {
   statusEl.textContent = message;
   statusEl.classList.add("visible");
 }
@@ -119,16 +156,24 @@ function clearLoading() {
 function setControlsDisabled(disabled) {
   inputEl.disabled = disabled;
   sendBtn.disabled = disabled;
-  sendBtn.classList.toggle("disabled", disabled);
+
+  sendBtn.classList.toggle(
+    "disabled",
+    disabled
+  );
 }
 
 function trimConversationHistory() {
   const systemMessage = conversation[0];
+
   const recentMessages = conversation
     .slice(1)
     .slice(-MAX_HISTORY_MESSAGES);
 
-  conversation = [systemMessage, ...recentMessages];
+  conversation = [
+    systemMessage,
+    ...recentMessages,
+  ];
 }
 
 async function generateResponse(userText) {
@@ -139,7 +184,9 @@ async function generateResponse(userText) {
 
   trimConversationHistory();
 
-  setLoading("Sir Aldren medita sus palabras...");
+  setLoading(
+    "Sir Aldren medita sus palabras..."
+  );
 
   const response = await fetch(API_URL, {
     method: "POST",
@@ -179,6 +226,7 @@ async function generateResponse(userText) {
   clearLoading();
 
   await typeText(responseEl, reply);
+
   speakAsAldren(reply);
 }
 
@@ -211,36 +259,48 @@ async function handleSend() {
   }
 }
 
-sendBtn.addEventListener("click", handleSend);
+sendBtn.addEventListener(
+  "click",
+  handleSend
+);
 
-inputEl.addEventListener("keydown", (event) => {
-  if (event.key === "Enter") {
-    event.preventDefault();
-    handleSend();
+inputEl.addEventListener(
+  "keydown",
+  (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleSend();
+    }
   }
-});
+);
 
-window.addEventListener("DOMContentLoaded", async () => {
+window.addEventListener(
+  "DOMContentLoaded",
+  async () => {
+    const music =
+      document.getElementById(
+        "backgroundMusic"
+      );
 
-  const music = document.getElementById("backgroundMusic");
+    if (music) {
+      music.volume = 0.10;
 
-  if (music) {
-    music.volume = 0.10;
+      document.addEventListener(
+        "click",
+        () => {
+          music.play().catch(() => {});
+        },
+        { once: true }
+      );
+    }
 
-    document.addEventListener(
-      "click",
-      () => {
-        music.play().catch(() => {});
-      },
-      { once: true }
+    nameEl.textContent = "SIR ALDREN";
+
+    setControlsDisabled(false);
+
+    await typeText(
+      responseEl,
+      "Por fin has llegado. Soy Sir Aldren, caballero de Order of Steel. Habla, viajero: ¿qué te trae hasta este lugar?"
     );
   }
-
-  nameEl.textContent = "SIR ALDREN";
-  setControlsDisabled(false);
-
-  await typeText(
-    responseEl,
-    "Por fin has llegado. Soy Sir Aldren, caballero de Order of Steel. Habla, viajero: ¿qué te trae hasta este lugar?"
-  );
-});
+);
