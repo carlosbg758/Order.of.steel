@@ -34,8 +34,41 @@ body {
 .scene {
   position: fixed;
   inset: 0;
-  background: url("images/escenario.webp") center center / cover no-repeat #050402;
   z-index: 0;
+
+  background-image: url("images/escenario.webp");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  background-color: #050402;
+}
+
+/* Ventanas más cuadradas: desplaza el encuadre para conservar caballo y caballero */
+@media (max-aspect-ratio: 16/9) {
+  .scene {
+    background-position: 43% center;
+  }
+}
+
+/* Portátiles y ventanas estrechas */
+@media (max-width: 1200px) {
+  .scene {
+    background-position: 40% center;
+  }
+}
+
+/* Tablets */
+@media (max-width: 900px) {
+  .scene {
+    background-position: 38% center;
+  }
+}
+
+/* Móviles */
+@media (max-width: 600px) {
+  .scene {
+    background-position: 35% center;
+  }
 }
 
 .vignette {
