@@ -11,6 +11,26 @@ const inputEl = document.getElementById("player-input");
 const sendBtn = document.getElementById("send-btn");
 const statusEl = document.getElementById("status");
 
+const backgroundMusic = document.getElementById("backgroundMusic");
+
+if (backgroundMusic) {
+  backgroundMusic.volume = 0.10;
+
+  const startBackgroundMusic = async () => {
+    try {
+      await backgroundMusic.play();
+
+      document.removeEventListener("pointerdown", startBackgroundMusic);
+      document.removeEventListener("keydown", startBackgroundMusic);
+    } catch (error) {
+      console.warn("No se pudo iniciar la música:", error);
+    }
+  };
+
+  document.addEventListener("pointerdown", startBackgroundMusic);
+  document.addEventListener("keydown", startBackgroundMusic);
+}
+
 let conversation = [
   {
     role: "system",
