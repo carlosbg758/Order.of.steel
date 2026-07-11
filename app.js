@@ -56,6 +56,40 @@ function randomErrorMessage() {
 }
 
 function typeText(target, text, speed = 16) {
+
+// ===============================
+// Voz de Sir Aldren (PRUEBA)
+// ===============================
+
+function speakAsAldren(text) {
+  if (!("speechSynthesis" in window)) return;
+
+  window.speechSynthesis.cancel();
+
+  const utterance = new SpeechSynthesisUtterance(text);
+
+  utterance.lang = "es-ES";
+  utterance.rate = 0.88;
+  utterance.pitch = 0.82;
+  utterance.volume = 1;
+
+  const voices = window.speechSynthesis.getVoices();
+
+  const spanishVoice =
+    voices.find(v => v.lang === "es-ES") ||
+    voices.find(v => v.lang.startsWith("es"));
+
+  if (spanishVoice) {
+    utterance.voice = spanishVoice;
+  }
+
+  window.speechSynthesis.speak(utterance);
+}
+
+window.speechSynthesis.onvoiceschanged = () => {
+  window.speechSynthesis.getVoices();
+};  
+  
   return new Promise((resolve) => {
     target.textContent = "";
     let index = 0;
@@ -145,6 +179,7 @@ async function generateResponse(userText) {
   clearLoading();
 
   await typeText(responseEl, reply);
+  speakAsAldren(reply);
 }
 
 async function handleSend() {
