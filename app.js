@@ -90,7 +90,7 @@ function typeText(target, text, speed = 16) {
 }
 
 // ===============================
-// Voz de Sir Aldren (PRUEBA)
+// Voz de Sir Aldren — Microsoft Pablo
 // ===============================
 
 function speakAsAldren(text) {
@@ -108,27 +108,36 @@ function speakAsAldren(text) {
     new SpeechSynthesisUtterance(text);
 
   utterance.lang = "es-ES";
-  utterance.rate = 0.88;
-  utterance.pitch = 0.82;
+  utterance.rate = 0.78;
+  utterance.pitch = 0.60;
   utterance.volume = 1;
 
   const voices =
     window.speechSynthesis.getVoices();
 
   const spanishVoice =
+    voices.find((voice) =>
+      voice.name.includes("Microsoft Pablo")
+    ) ||
+    voices.find((voice) =>
+      voice.name.includes("Pablo")
+    ) ||
     voices.find(
       (voice) =>
         voice.lang.toLowerCase() === "es-es"
     ) ||
-    voices.find(
-      (voice) =>
-        voice.lang
-          .toLowerCase()
-          .startsWith("es")
+    voices.find((voice) =>
+      voice.lang
+        .toLowerCase()
+        .startsWith("es")
     );
 
   if (spanishVoice) {
     utterance.voice = spanishVoice;
+  } else {
+    console.warn(
+      "No se encontró la voz Microsoft Pablo."
+    );
   }
 
   window.speechSynthesis.speak(utterance);
