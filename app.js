@@ -1,7 +1,8 @@
-import { CreateMLCEngine } from "@mlc-ai/web-llm";
 import { SYSTEM_PROMPT } from "./prompts.js";
 
-const MODEL_ID = "Llama-3.2-1B-Instruct-q4f32_1-MLC";
+const API_URL =
+  "https://order-of-steel-api.cbgraphics1.workers.dev/";
+
 const MAX_HISTORY_MESSAGES = 10;
 
 const nameEl = document.getElementById("knight-name");
@@ -9,9 +10,6 @@ const responseEl = document.getElementById("knight-response");
 const inputEl = document.getElementById("player-input");
 const sendBtn = document.getElementById("send-btn");
 const statusEl = document.getElementById("status");
-
-let engine = null;
-let enginePromise = null;
 
 let conversation = [
   {
@@ -23,7 +21,6 @@ let conversation = [
 function typeText(target, text, speed = 16) {
   return new Promise((resolve) => {
     target.textContent = "";
-
     let index = 0;
 
     const timer = setInterval(() => {
@@ -38,7 +35,7 @@ function typeText(target, text, speed = 16) {
   });
 }
 
-function setLoading(message = "Despertando la memoria del caballero...") {
+function setLoading(message = "Sir Aldren medita sus palabras...") {
   statusEl.textContent = message;
   statusEl.classList.add("visible");
 }
@@ -54,91 +51,56 @@ function setControlsDisabled(disabled) {
   sendBtn.classList.toggle("disabled", disabled);
 }
 
-function formatProgress(report) {
-  if (typeof report?.progress === "number") {
-    const percentage = Math.round(report.progress * 100);
-
-    return `Despertando los recuerdos de Sir Aldren... ${percentage}%`;
-  }
-
-  return "Despertando los recuerdos de Sir Aldren...";
-}
-
-function checkWebGPUSupport() {
-  return "gpu" in navigator;
-}
-
-async function initializeEngine() {
-  if (engine) {
-    return engine;
-  }
-
-  if (enginePromise) {
-    return enginePromise;
-  }
-
-  if (!checkWebGPUSupport()) {
-    throw new Error(
-      "Este artefacto no puede despertar en este navegador. Utiliza una versión reciente de Chrome o Edge."
-    );
-  }
-
-  setControlsDisabled(true);
-  setLoading("Despertando los recuerdos de Sir Aldren...");
-
-  enginePromise = CreateMLCEngine(MODEL_ID, {
-    initProgressCallback: (report) => {
-      setLoading(formatProgress(report));
-    },
-  })
-    .then((loadedEngine) => {
-      engine = loadedEngine;
-      clearLoading();
-      setControlsDisabled(false);
-      return engine;
-    })
-    .catch((error) => {
-      enginePromise = null;
-      clearLoading();
-      setControlsDisabled(false);
-      throw error;
-    });
-
-  return enginePromise;
-}
-
 function trimConversationHistory() {
   const systemMessage = conversation[0];
-  const recentMessages = conversation.slice(1).slice(-MAX_HISTORY_MESSAGES);
+  const recentMessages = conversation
+    .slice(1)
+    .slice(-MAX_HISTORY_MESSAGES);
 
   conversation = [systemMessage, ...recentMessages];
 }
 
 async function generateResponse(userText) {
-  const activeEngine = await initializeEngine();
-
   conversation.push({
     role: "user",
     content: userText,
   });
 
   trimConversationHistory();
-
   setLoading("Sir Aldren medita sus palabras...");
 
-  const completion = await activeEngine.chat.completions.create({
-    messages: conversation,
-    temperature: 0.75,
-    top_p: 0.9,
-    max_tokens: 220,
-    repetition_penalty: 1.1,
+  const response = await fetch(API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      messages: conversation,
+    }),
   });
 
-  clearLoading();
+  let result;
 
-  const reply =
-    completion?.choices?.[0]?.message?.content?.trim() ||
-    "El silencio pesa sobre estas piedras. Formula de nuevo tu pregunta, viajero.";
+  try {
+    result = await response.json();
+  } catch {
+    throw new Error(
+      "El servidor ha devuelto una respuesta que no se puede interpretar."
+    );
+  }
+
+  if (!response.ok || !result?.ok) {
+    throw new Error(
+      result?.error ||
+        "La Orden no ha podido establecer contacto con Sir Aldren."
+    );
+  }
+
+  const reply = result.reply?.trim();
+
+  if (!reply) {
+    throw new Error("Sir Aldren ha guardado silencio.");
+  }
 
   conversation.push({
     role: "assistant",
@@ -146,6 +108,7 @@ async function generateResponse(userText) {
   });
 
   trimConversationHistory();
+  clearLoading();
 
   await typeText(responseEl, reply);
 }
@@ -164,12 +127,16 @@ async function handleSend() {
     await generateResponse(text);
   } catch (error) {
     console.error(error);
-
     clearLoading();
+
+    const message =
+      error instanceof Error
+        ? error.message
+        : "Una fuerza desconocida ha interrumpido la conversación.";
 
     await typeText(
       responseEl,
-      "Algo perturba mis recuerdos. Las sombras de estas piedras no me permiten responder en este momento.",
+      `Algo perturba estas piedras. ${message}`,
       12
     );
   } finally {
@@ -189,11 +156,10 @@ inputEl.addEventListener("keydown", (event) => {
 
 window.addEventListener("DOMContentLoaded", async () => {
   nameEl.textContent = "SIR ALDREN";
-
   setControlsDisabled(false);
 
   await typeText(
     responseEl,
-    "Por fin has llegado. Soy Sir Aldren, caballero de la Orden de Acero. Algunos la conocen como Order of Steel. Habla, viajero: ¿qué te trae hasta este lugar?"
+    "Por fin has llegado. Soy Sir Aldren, caballero de la Orden de Acero, conocida como Order of Steel. Habla, viajero: ¿qué te trae hasta este lugar?"
   );
 });
