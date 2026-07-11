@@ -166,12 +166,26 @@ inputEl.addEventListener("keydown", (event) => {
 });
 
 window.addEventListener("DOMContentLoaded", async () => {
-  nameEl.textContent = "SIR ALDREN";
 
+  const music = document.getElementById("backgroundMusic");
+
+  if (music) {
+    music.volume = 0.10;
+
+    document.addEventListener(
+      "click",
+      () => {
+        music.play().catch(() => {});
+      },
+      { once: true }
+    );
+  }
+
+  nameEl.textContent = "SIR ALDREN";
   setControlsDisabled(false);
 
   await typeText(
     responseEl,
-    "Por fin has llegado. Soy Sir Aldren, caballero de la Order of Steel. Siéntate junto a mí, viajero, y comparte aquello que inquieta tu espíritu. Escucharé tus palabras con la paciencia que solo los años conceden."
+    "Por fin has llegado. Soy Sir Aldren, caballero de la Orden de Acero, conocida como Order of Steel. Habla, viajero: ¿qué te trae hasta este lugar?"
   );
 });
