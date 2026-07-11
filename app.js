@@ -190,20 +190,10 @@ inputEl.addEventListener("keydown", (event) => {
 window.addEventListener("DOMContentLoaded", async () => {
   nameEl.textContent = "SIR ALDREN";
 
+  setControlsDisabled(false);
+
   await typeText(
     responseEl,
     "Por fin has llegado. Soy Sir Aldren, caballero de la Orden de Acero. Algunos la conocen como Order of Steel. Habla, viajero: ¿qué te trae hasta este lugar?"
   );
-
-  try {
-    await initializeEngine();
-  } catch (error) {
-    console.error(error);
-
-    await typeText(
-      responseEl,
-      "Mis recuerdos permanecen dormidos. Alguna fuerza desconocida impide que mi memoria despierte.",
-      12
-    );
-  }
 });
