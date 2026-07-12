@@ -336,3 +336,80 @@ body {
     transform: translateX(-50%) translateY(0);
   }
 }
+
+/* ==========================================================
+   LOADING SCREEN
+========================================================== */
+
+.scene-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: #050402;
+
+  opacity: 1;
+  transition: opacity 0.8s ease;
+
+  pointer-events: all;
+}
+
+.scene-loader.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.scene-loader-content {
+  text-align: center;
+}
+
+.scene-loader-crest {
+  width: 95px;
+  opacity: 0.95;
+
+  animation: loaderPulse 2.2s ease-in-out infinite;
+}
+
+.scene-loader-title {
+  margin-top: 18px;
+
+  font-family: "Cinzel", serif;
+  font-size: 1.15rem;
+  letter-spacing: 0.28em;
+
+  color: var(--gold-bright);
+}
+
+.scene-loader-text {
+  margin-top: 14px;
+
+  font-family: "EB Garamond", serif;
+  font-size: 1rem;
+  font-style: italic;
+
+  color: var(--parchment);
+  opacity: .85;
+}
+
+@keyframes loaderPulse {
+
+  0% {
+    opacity: .35;
+    transform: scale(.96);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: .35;
+    transform: scale(.96);
+  }
+
+}
