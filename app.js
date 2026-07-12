@@ -5,20 +5,31 @@ const API_URL =
 
 const MAX_HISTORY_MESSAGES = 10;
 
+// ==========================================================
+// ELEMENTOS DE LA INTERFAZ
+// ==========================================================
+
 const nameEl = document.getElementById("knight-name");
 const responseEl = document.getElementById("knight-response");
 const inputEl = document.getElementById("player-input");
 const sendBtn = document.getElementById("send-btn");
 const statusEl = document.getElementById("status");
 
-const backgroundMusic = document.getElementById("backgroundMusic");
+const backgroundMusic =
+  document.getElementById("backgroundMusic");
 
-// ===========================================
+// ==========================================================
 // ESCENARIOS
-// ===========================================
+// ==========================================================
 
-const sceneImage = document.getElementById("sceneImage");
-const sceneVideo = document.getElementById("sceneVideo");
+const sceneImage =
+  document.getElementById("sceneImage");
+
+const sceneVideo =
+  document.getElementById("sceneVideo");
+
+const sceneLoader =
+  document.getElementById("sceneLoader");
 
 const SCENES = [
   {
@@ -55,31 +66,170 @@ const SCENES = [
   },
 ];
 
-function loadRandomScene() {
+function hideSceneLoader() {
+  if (!sceneLoader) {
+    return;
+  }
+
+  sceneLoader.classList.add("hidden");
+
+  window.setTimeout(() => {
+    sceneLoader.style.display = "none";
+  }, 850);
+}
+
+function showFallbackScene() {
+  if (!sceneImage || !sceneVideo) {
+    return;
+  }
+
+  sceneVideo.pause();
+  sceneVideo.style.display = "none";
+
+  sceneImage.style.display = "block";
+  sceneImage.style.backgroundImage =
+    'url("images/00escenario.webp")';
+  sceneImage.style.opacity = "0";
+
+  requestAnimationFrame(() => {
+    sceneImage.style.opacity = "1";
+    hideSceneLoader();
+  });
+}
+
+async function loadImageScene(scene) {
+  await new Promise((resolve, reject) => {
+    const image = new Image();
+
+    image.onload = resolve;
+    image.onerror = reject;
+    image.src = scene.src;
+  });
+
+  sceneVideo.pause();
+  sceneVideo.removeAttribute("src");
+  sceneVideo.load();
+  sceneVideo.style.display = "none";
+  sceneVideo.style.opacity = "0";
+
+  sceneImage.style.display = "block";
+  sceneImage.style.backgroundImage =
+    `url("${scene.src}")`;
+  sceneImage.style.opacity = "0";
+
+  requestAnimationFrame(() => {
+    sceneImage.style.opacity = "1";
+    hideSceneLoader();
+  });
+}
+
+async function loadVideoScene(scene) {
+  sceneImage.style.display = "none";
+  sceneImage.style.opacity = "0";
+
+  sceneVideo.muted = true;
+  sceneVideo.defaultMuted = true;
+  sceneVideo.volume = 0;
+  sceneVideo.loop = true;
+  sceneVideo.autoplay = true;
+  sceneVideo.playsInline = true;
+  sceneVideo.src = scene.src;
+  sceneVideo.style.display = "block";
+  sceneVideo.style.opacity = "0";
+
+  await new Promise((resolve, reject) => {
+    const handleCanPlay = () => {
+      cleanup();
+      resolve();
+    };
+
+    const handleError = () => {
+      cleanup();
+      reject(
+        new Error("No se pudo cargar el vídeo.")
+      );
+    };
+
+    const cleanup = () => {
+      sceneVideo.removeEventListener(
+        "canplay",
+        handleCanPlay
+      );
+
+      sceneVideo.removeEventListener(
+        "error",
+        handleError
+      );
+    };
+
+    sceneVideo.addEventListener(
+      "canplay",
+      handleCanPlay
+    );
+
+    sceneVideo.addEventListener(
+      "error",
+      handleError
+    );
+
+    sceneVideo.load();
+  });
+
+  try {
+    await sceneVideo.play();
+  } catch (error) {
+    console.warn(
+      "El navegador bloqueó el autoplay:",
+      error
+    );
+  }
+
+  requestAnimationFrame(() => {
+    sceneVideo.style.opacity = "1";
+    hideSceneLoader();
+  });
+}
+
+async function loadRandomScene() {
+  if (!sceneImage || !sceneVideo || !sceneLoader) {
+    console.error(
+      "No se encontraron sceneImage, sceneVideo o sceneLoader."
+    );
+
+    return;
+  }
 
   const scene =
-    SCENES[Math.floor(Math.random() * SCENES.length)];
+    SCENES[
+      Math.floor(Math.random() * SCENES.length)
+    ];
 
-  if (scene.type === "image") {
+  try {
+    if (scene.type === "video") {
+      await loadVideoScene(scene);
+      return;
+    }
 
-    sceneVideo.pause();
-    sceneVideo.style.display = "none";
+    await loadImageScene(scene);
+  } catch (error) {
+    console.error(
+      "No se pudo cargar el escenario seleccionado:",
+      error
+    );
 
-    sceneImage.style.display = "block";
-    sceneImage.style.backgroundImage = `url("${scene.src}")`;
-
-  } else {
-
-    sceneImage.style.display = "none";
-
-    sceneVideo.src = scene.src;
-    sceneVideo.style.display = "block";
-
-    sceneVideo.play().catch(() => {});
+    showFallbackScene();
   }
 }
 
-if (backgroundMusic) {
+// ==========================================================
+// MÚSICA AMBIENTAL
+// ==========================================================
+
+function prepareBackgroundMusic() {
+  if (!backgroundMusic) {
+    return;
+  }
+
   backgroundMusic.volume = 0.10;
 
   const startBackgroundMusic = async () => {
@@ -114,6 +264,10 @@ if (backgroundMusic) {
   );
 }
 
+// ==========================================================
+// CONVERSACIÓN
+// ==========================================================
+
 let conversation = [
   {
     role: "system",
@@ -121,12 +275,11 @@ let conversation = [
   },
 ];
 
-// Mensajes inmersivos cuando ocurre cualquier problema
 const ERROR_MESSAGES = [
   "Algo perturba estas piedras. Mis pensamientos no alcanzan aún la respuesta.",
   "Una extraña sombra cubre mis recuerdos. Háblame de nuevo, viajero.",
   "Los ecos de esta fortaleza guardan hoy silencio. Intentemos otra vez.",
-  "La memoria de la Order of Steel permanece velada por un instante.",
+  "La memoria de Order of Steel permanece velada por un instante.",
   "No toda pregunta encuentra respuesta al primer intento. Vuelve a hablarme.",
   "El silencio envuelve mi mente. Concédeme otro instante.",
   "Incluso el acero necesita un respiro antes de volver al combate. Inténtalo de nuevo.",
@@ -134,30 +287,33 @@ const ERROR_MESSAGES = [
 
 function randomErrorMessage() {
   return ERROR_MESSAGES[
-    Math.floor(Math.random() * ERROR_MESSAGES.length)
+    Math.floor(
+      Math.random() * ERROR_MESSAGES.length
+    )
   ];
 }
 
 function typeText(target, text, speed = 16) {
   return new Promise((resolve) => {
     target.textContent = "";
+
     let index = 0;
 
-    const timer = setInterval(() => {
+    const timer = window.setInterval(() => {
       target.textContent += text.charAt(index);
       index += 1;
 
       if (index >= text.length) {
-        clearInterval(timer);
+        window.clearInterval(timer);
         resolve();
       }
     }, speed);
   });
 }
 
-// ===============================
-// Voz de Sir Aldren — Microsoft Pablo
-// ===============================
+// ==========================================================
+// VOZ DE SIR ALDREN — MICROSOFT PABLO
+// ==========================================================
 
 function speakAsAldren(text) {
   if (!("speechSynthesis" in window)) {
@@ -216,6 +372,10 @@ if ("speechSynthesis" in window) {
     };
 }
 
+// ==========================================================
+// ESTADO DE LA INTERFAZ
+// ==========================================================
+
 function setLoading(
   message = "Sir Aldren medita sus palabras..."
 ) {
@@ -251,6 +411,10 @@ function trimConversationHistory() {
   ];
 }
 
+// ==========================================================
+// RESPUESTA DE SIR ALDREN
+// ==========================================================
+
 async function generateResponse(userText) {
   conversation.push({
     role: "user",
@@ -278,17 +442,17 @@ async function generateResponse(userText) {
   try {
     result = await response.json();
   } catch {
-    throw new Error("Respuesta inválida");
+    throw new Error("Respuesta inválida.");
   }
 
   if (!response.ok || !result?.ok) {
-    throw new Error("Error del servidor");
+    throw new Error("Error del servidor.");
   }
 
   const reply = result.reply?.trim();
 
   if (!reply) {
-    throw new Error("Respuesta vacía");
+    throw new Error("Respuesta vacía.");
   }
 
   conversation.push({
@@ -334,6 +498,10 @@ async function handleSend() {
   }
 }
 
+// ==========================================================
+// EVENTOS
+// ==========================================================
+
 sendBtn.addEventListener(
   "click",
   handleSend
@@ -348,28 +516,15 @@ inputEl.addEventListener(
     }
   }
 );
+
 window.addEventListener(
   "DOMContentLoaded",
   async () => {
+    setControlsDisabled(true);
 
-    loadRandomScene();
+    prepareBackgroundMusic();
 
-    const music =
-      document.getElementById(
-        "backgroundMusic"
-      );
-
-    if (music) {
-      music.volume = 0.10;
-
-      document.addEventListener(
-        "click",
-        () => {
-          music.play().catch(() => {});
-        },
-        { once: true }
-      );
-    }
+    await loadRandomScene();
 
     nameEl.textContent = "SIR ALDREN";
 
@@ -379,5 +534,7 @@ window.addEventListener(
       responseEl,
       "Por fin has llegado. Soy Sir Aldren, caballero de Order of Steel. Habla, viajero: ¿qué te trae hasta este lugar?"
     );
+
+    inputEl.focus();
   }
 );
