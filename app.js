@@ -348,10 +348,12 @@ inputEl.addEventListener(
     }
   }
 );
-
 window.addEventListener(
   "DOMContentLoaded",
   async () => {
+
+    loadRandomScene();
+
     const music =
       document.getElementById(
         "backgroundMusic"
