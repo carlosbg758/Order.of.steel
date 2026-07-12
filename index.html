@@ -20,7 +20,18 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="scene" aria-hidden="true"></div>
+    <div class="scene" aria-hidden="true">
+  <div id="sceneImage" class="scene-image"></div>
+
+  <video
+    id="sceneVideo"
+    class="scene-video"
+    muted
+    loop
+    playsinline
+    preload="auto"
+  ></video>
+</div>
     <div class="vignette" aria-hidden="true"></div>
 
     <section class="dialogue-panel" id="dialogue-panel" aria-label="Dialogue with Sir Aldren">
