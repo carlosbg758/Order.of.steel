@@ -35,42 +35,73 @@ body {
   position: fixed;
   inset: 0;
   z-index: 0;
-
-  background-image: url("images/escenario.webp");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center center;
+  overflow: hidden;
   background-color: #050402;
 }
 
-/* Ventanas más cuadradas: desplaza el encuadre para conservar caballo y caballero */
+.scene-image,
+.scene-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.scene-image {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
+
+.scene-video {
+  display: none;
+  object-fit: cover;
+  object-position: center center;
+}
+
+/* Ventanas más cuadradas */
 @media (max-aspect-ratio: 16/9) {
-  .scene {
+  .scene-image {
     background-position: 43% center;
+  }
+
+  .scene-video {
+    object-position: 43% center;
   }
 }
 
 /* Portátiles y ventanas estrechas */
 @media (max-width: 1200px) {
-  .scene {
+  .scene-image {
     background-position: 40% center;
+  }
+
+  .scene-video {
+    object-position: 40% center;
   }
 }
 
 /* Tablets */
 @media (max-width: 900px) {
-  .scene {
+  .scene-image {
     background-position: 38% center;
+  }
+
+  .scene-video {
+    object-position: 38% center;
   }
 }
 
 /* Móviles */
 @media (max-width: 600px) {
-  .scene {
+  .scene-image {
     background-position: 35% center;
   }
-}
 
+  .scene-video {
+    object-position: 35% center;
+  }
+}
 .vignette {
   position: fixed;
   left: 0;
