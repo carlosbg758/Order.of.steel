@@ -64,6 +64,10 @@ const SCENES = [
     type: "image",
     src: "images/07escenario.webp",
   },
+    {
+    type: "image",
+    src: "images/08escenario.webp",
+  },
 ];
 
 function hideSceneLoader() {
