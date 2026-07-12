@@ -13,6 +13,72 @@ const statusEl = document.getElementById("status");
 
 const backgroundMusic = document.getElementById("backgroundMusic");
 
+// ===========================================
+// ESCENARIOS
+// ===========================================
+
+const sceneImage = document.getElementById("sceneImage");
+const sceneVideo = document.getElementById("sceneVideo");
+
+const SCENES = [
+  {
+    type: "image",
+    src: "images/00escenario.webp",
+  },
+  {
+    type: "video",
+    src: "videos/01escenario.mp4",
+  },
+  {
+    type: "image",
+    src: "images/02escenario.webp",
+  },
+  {
+    type: "image",
+    src: "images/03escenario.webp",
+  },
+  {
+    type: "image",
+    src: "images/04escenario.webp",
+  },
+  {
+    type: "image",
+    src: "images/05escenario.webp",
+  },
+  {
+    type: "image",
+    src: "images/06escenario.webp",
+  },
+  {
+    type: "image",
+    src: "images/07escenario.webp",
+  },
+];
+
+function loadRandomScene() {
+
+  const scene =
+    SCENES[Math.floor(Math.random() * SCENES.length)];
+
+  if (scene.type === "image") {
+
+    sceneVideo.pause();
+    sceneVideo.style.display = "none";
+
+    sceneImage.style.display = "block";
+    sceneImage.style.backgroundImage = `url("${scene.src}")`;
+
+  } else {
+
+    sceneImage.style.display = "none";
+
+    sceneVideo.src = scene.src;
+    sceneVideo.style.display = "block";
+
+    sceneVideo.play().catch(() => {});
+  }
+}
+
 if (backgroundMusic) {
   backgroundMusic.volume = 0.10;
 
