@@ -41,6 +41,14 @@ const SCENES = [
     src: "videos/01escenario.mp4",
   },
   {
+    type: "video",
+    src: "videos/02escenario.mp4",
+  },
+  {
+    type: "video",
+    src: "videos/03escenario.mp4",
+  },
+  {
     type: "image",
     src: "images/02escenario.webp",
   },
@@ -64,7 +72,7 @@ const SCENES = [
     type: "image",
     src: "images/07escenario.webp",
   },
-    {
+  {
     type: "image",
     src: "images/08escenario.webp",
   },
