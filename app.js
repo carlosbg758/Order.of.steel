@@ -340,10 +340,12 @@ function typeText(target, text, speed = 16) {
 }
 
 // ==========================================================
-// VOZ DE SIR ALDREN — MICROSOFT PABLO
+// VOZ DE SIR ALDREN — ELEVENLABS + RESPALDO MICROSOFT PABLO
 // ==========================================================
 
-function speakAsAldren(text) {
+let currentAldrenAudio = null;
+
+function speakWithMicrosoftPablo(text) {
   if (!("speechSynthesis" in window)) {
     console.warn(
       "Este navegador no admite síntesis de voz."
@@ -391,6 +393,92 @@ function speakAsAldren(text) {
   }
 
   window.speechSynthesis.speak(utterance);
+}
+
+async function speakAsAldren(text) {
+  if (!text || typeof text !== "string") {
+    return;
+  }
+
+  // Detiene cualquier voz anterior.
+  if ("speechSynthesis" in window) {
+    window.speechSynthesis.cancel();
+  }
+
+  if (currentAldrenAudio) {
+    currentAldrenAudio.pause();
+    currentAldrenAudio.src = "";
+    currentAldrenAudio = null;
+  }
+
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        action: "tts",
+        text,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `ElevenLabs devolvió el estado ${response.status}.`
+      );
+    }
+
+    const audioBlob = await response.blob();
+
+    if (!audioBlob.size) {
+      throw new Error(
+        "ElevenLabs devolvió un audio vacío."
+      );
+    }
+
+    const audioUrl =
+      URL.createObjectURL(audioBlob);
+
+    const audio =
+      new Audio(audioUrl);
+
+    currentAldrenAudio = audio;
+    audio.volume = 1;
+
+    audio.addEventListener(
+      "ended",
+      () => {
+        URL.revokeObjectURL(audioUrl);
+
+        if (currentAldrenAudio === audio) {
+          currentAldrenAudio = null;
+        }
+      },
+      { once: true }
+    );
+
+    audio.addEventListener(
+      "error",
+      () => {
+        URL.revokeObjectURL(audioUrl);
+
+        if (currentAldrenAudio === audio) {
+          currentAldrenAudio = null;
+        }
+      },
+      { once: true }
+    );
+
+    await audio.play();
+  } catch (error) {
+    console.warn(
+      "ElevenLabs no pudo reproducir la voz. Se utilizará Microsoft Pablo:",
+      error
+    );
+
+    speakWithMicrosoftPablo(text);
+  }
 }
 
 if ("speechSynthesis" in window) {
