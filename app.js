@@ -257,7 +257,7 @@ function prepareBackgroundMusic() {
   backgroundMusic.src =
     MUSIC[Math.floor(Math.random() * MUSIC.length)];
 
-  backgroundMusic.volume = 0.10;
+  backgroundMusic.volume = 0.5;
   backgroundMusic.loop = true;
 
   const startBackgroundMusic = async () => {
