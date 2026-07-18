@@ -34,7 +34,7 @@ const sceneLoader =
 const SCENES = [
   {
     type: "image",
-    src: "images/00escenario.webp",
+    src: "images/desktop/00escenario.webp",
   },
   {
     type: "video",
@@ -50,31 +50,31 @@ const SCENES = [
   },
   {
     type: "image",
-    src: "images/02escenario.webp",
+    src: "images/desktop/02escenario.webp",
   },
   {
     type: "image",
-    src: "images/03escenario.webp",
+    src: "images/desktop/03escenario.webp",
   },
   {
     type: "image",
-    src: "images/04escenario.webp",
+    src: "images/desktop/04escenario.webp",
   },
   {
     type: "image",
-    src: "images/05escenario.webp",
+    src: "images/desktop/05escenario.webp",
   },
   {
     type: "image",
-    src: "images/06escenario.webp",
+    src: "images/desktop/06escenario.webp",
   },
   {
     type: "image",
-    src: "images/07escenario.webp",
+    src: "images/desktop/07escenario.webp",
   },
   {
     type: "image",
-    src: "images/08escenario.webp",
+    src: "images/desktop/08escenario.webp",
   },
 ];
 
