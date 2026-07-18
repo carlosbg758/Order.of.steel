@@ -240,13 +240,13 @@ async function loadRandomScene() {
 const MUSIC = [
   "audio/Order.mp3",
   "audio/2.Order.mp3",
-  "audio/3.Order.mp3",
-  "audio/4.Order.mp3",
-  "audio/5.Order.mp3",
-  "audio/6.Order.mp3",
-  "audio/7.Order.mp3",
-  "audio/8.Order.mp3",
-  "audio/9.Order.mp3",
+  // "audio/3.Order.mp3",
+  // "audio/4.Order.mp3",
+  // "audio/5.Order.mp3",
+  // "audio/6.Order.mp3",
+  // "audio/7.Order.mp3",
+  // "audio/8.Order.mp3",
+  // "audio/9.Order.mp3",
 ];
 
 function prepareBackgroundMusic() {
