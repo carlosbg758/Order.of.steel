@@ -100,7 +100,7 @@ function showFallbackScene() {
 
   sceneImage.style.display = "block";
   sceneImage.style.backgroundImage =
-    'url("images/00escenario.webp")';
+    'url("images/desktop/00escenario.webp")';
   sceneImage.style.opacity = "0";
 
   requestAnimationFrame(() => {
