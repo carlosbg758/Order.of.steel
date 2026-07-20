@@ -508,3 +508,13 @@ body {
 
     letter-spacing:.08em;
 }}
+
+
+.entry-screen-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 0.7s ease,
+    visibility 0.7s ease;
+}
