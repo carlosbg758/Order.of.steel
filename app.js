@@ -39,6 +39,10 @@ const sceneVideo =
 const sceneLoader =
   document.getElementById("sceneLoader");
 
+const SCENE_FOLDER = isMobileDevice()
+  ? "images/mobile/"
+  : "images/desktop/";
+
 const SCENES = [
   {
     type: "image",
