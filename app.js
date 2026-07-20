@@ -13,6 +13,14 @@ function isMobileDevice() {
   return window.matchMedia("(max-width: 768px)").matches;
 }
 
+const DEVICE = {
+  mobile: isMobileDevice(),
+};
+
+const SCENE_FOLDER = DEVICE.mobile
+  ? "images/mobile/"
+  : "images/desktop/";
+
 // ==========================================================
 // ELEMENTOS DE LA INTERFAZ
 // ==========================================================
