@@ -403,15 +403,16 @@ function speakWithMicrosoftPablo(text) {
         .startsWith("es")
     );
 
-  if (spanishVoice) {
-    utterance.voice = spanishVoice;
-  } else {
-    console.warn(
-      "No se encontró la voz Microsoft Pablo."
-    );
-  }
+if (!spanishVoice) {
+  console.warn(
+    "No se encontró ninguna voz española. Se cancela la reproducción."
+  );
 
-  window.speechSynthesis.speak(utterance);
+  return;
+}
+
+utterance.voice = spanishVoice;
+window.speechSynthesis.speak(utterance);
 }
 
 async function speakAsAldren(text) {
