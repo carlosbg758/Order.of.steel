@@ -46,7 +46,7 @@ const SCENE_FOLDER = isMobileDevice()
 const SCENES = [
   {
     type: "image",
-    src: "images/desktop/00escenario.webp",
+    src: SCENE_FOLDER + "00escenario.webp",
   },
   {
     type: "video",
@@ -62,31 +62,31 @@ const SCENES = [
   },
   {
     type: "image",
-    src: "images/desktop/02escenario.webp",
+    src: SCENE_FOLDER + "02escenario.webp",
   },
   {
     type: "image",
-    src: "images/desktop/03escenario.webp",
+    src: SCENE_FOLDER + "03escenario.webp",
   },
   {
     type: "image",
-    src: "images/desktop/04escenario.webp",
+    src: SCENE_FOLDER + "04escenario.webp",
   },
   {
     type: "image",
-    src: "images/desktop/05escenario.webp",
+    src: SCENE_FOLDER + "05escenario.webp",
   },
   {
     type: "image",
-    src: "images/desktop/06escenario.webp",
+    src: SCENE_FOLDER + "06escenario.webp",
   },
   {
     type: "image",
-    src: "images/desktop/07escenario.webp",
+    src: SCENE_FOLDER + "07escenario.webp",
   },
   {
     type: "image",
-    src: "images/desktop/08escenario.webp",
+    src: SCENE_FOLDER + "08escenario.webp",
   },
 ];
 
@@ -111,8 +111,8 @@ function showFallbackScene() {
   sceneVideo.style.display = "none";
 
   sceneImage.style.display = "block";
-  sceneImage.style.backgroundImage =
-    'url("images/desktop/00escenario.webp")';
+ sceneImage.style.backgroundImage =
+  `url("${SCENE_FOLDER}00escenario.webp")`;
   sceneImage.style.opacity = "0";
 
   requestAnimationFrame(() => {
