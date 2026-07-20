@@ -6,6 +6,14 @@ const API_URL =
 const MAX_HISTORY_MESSAGES = 10;
 
 // ==========================================================
+// DETECCIÓN DE DISPOSITIVO
+// ==========================================================
+
+function isMobileDevice() {
+  return window.matchMedia("(max-width: 768px)").matches;
+}
+
+// ==========================================================
 // ELEMENTOS DE LA INTERFAZ
 // ==========================================================
 
