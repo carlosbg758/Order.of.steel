@@ -655,22 +655,38 @@ inputEl.addEventListener(
 
 window.addEventListener(
   "DOMContentLoaded",
-  async () => {
+  () => {
+    const entryScreen =
+      document.getElementById("entry-screen");
+
+    const enterButton =
+      document.getElementById("enter-button");
+
     setControlsDisabled(true);
 
-    prepareBackgroundMusic();
+    enterButton.addEventListener(
+      "click",
+      async () => {
+        enterButton.disabled = true;
 
-    await loadRandomScene();
+        prepareBackgroundMusic();
 
-    nameEl.textContent = "SIR ALDREN";
+        entryScreen.classList.add("entry-screen-hidden");
 
-    setControlsDisabled(false);
+        await loadRandomScene();
 
-    await typeText(
-      responseEl,
-      "Por fin has llegado. Soy Sir Aldren, caballero de Order of Steel. Habla, viajero: ¿qué te trae hasta este lugar?"
+        nameEl.textContent = "SIR ALDREN";
+
+        setControlsDisabled(false);
+
+        await typeText(
+          responseEl,
+          "Por fin has llegado. Soy Sir Aldren, caballero de Order of Steel. Habla, viajero: ¿qué te trae hasta este lugar?"
+        );
+
+        inputEl.focus();
+      },
+      { once: true }
     );
-
-    inputEl.focus();
   }
 );
