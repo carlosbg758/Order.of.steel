@@ -258,7 +258,6 @@ async function loadRandomScene() {
 // ==========================================================
 
 const MUSIC = [
-  "audio/Order.mp3",
   "audio/2.Order.mp3",
   // "audio/3.Order.mp3",
   // "audio/4.Order.mp3",
