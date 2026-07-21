@@ -75,12 +75,17 @@ body {
 }
 
 .top-logo {
-  width: 110px;
+  width: 180px;
   height: auto;
   object-fit: contain;
 
   filter:
-    drop-shadow(0 0 10px rgba(201,166,74,.30));
+    drop-shadow(0 0 12px rgba(201,166,74,.35));
+}
+@media (max-width: 640px) {
+  .top-logo {
+    width: 145px;
+  }
 }
 
 .top-title {
