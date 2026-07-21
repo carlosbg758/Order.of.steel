@@ -266,7 +266,7 @@ const MUSIC = [
 
 function prepareBackgroundMusic() {
   if (!backgroundMusic) {
-    return;
+    return Promise.resolve();
   }
 
   backgroundMusic.src =
@@ -275,36 +275,7 @@ function prepareBackgroundMusic() {
   backgroundMusic.volume = 0.2;
   backgroundMusic.loop = true;
 
-  const startBackgroundMusic = async () => {
-    try {
-      await backgroundMusic.play();
-
-      document.removeEventListener(
-        "pointerdown",
-        startBackgroundMusic
-      );
-
-      document.removeEventListener(
-        "keydown",
-        startBackgroundMusic
-      );
-    } catch (error) {
-      console.warn(
-        "No se pudo iniciar la música:",
-        error
-      );
-    }
-  };
-
-  document.addEventListener(
-    "pointerdown",
-    startBackgroundMusic
-  );
-
-  document.addEventListener(
-    "keydown",
-    startBackgroundMusic
-  );
+  return backgroundMusic.play();
 }
 
 // ==========================================================
@@ -665,7 +636,7 @@ window.addEventListener(
       async () => {
         enterButton.disabled = true;
 
-        prepareBackgroundMusic();
+        await prepareBackgroundMusic();
 
         entryScreen.classList.add("entry-screen-hidden");
 
@@ -677,7 +648,7 @@ window.addEventListener(
 
         await typeText(
           responseEl,
-          "Por fin has llegado. Soy Sir Aldren, caballero de Order of Steel. Habla, viajero: ¿qué te trae hasta este lugar?"
+          "Soy Sir Aldren, caballero de Order of Steel. Habla, viajero: ¿qué te trae hasta este lugar?"
         );
 
         inputEl.focus();
