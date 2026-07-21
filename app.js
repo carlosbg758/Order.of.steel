@@ -636,6 +636,9 @@ window.addEventListener(
       async () => {
         enterButton.disabled = true;
 
+ if (navigator.vibrate) {
+  navigator.vibrate(25);
+}
         await prepareBackgroundMusic();
 
         entryScreen.classList.add("entry-screen-hidden");
