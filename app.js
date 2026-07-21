@@ -645,7 +645,13 @@ window.addEventListener(
 
         await loadRandomScene();
 
-        nameEl.textContent = "SIR ALDREN";
+await new Promise(resolve => setTimeout(resolve, 600));
+
+document
+  .querySelector(".dialogue-panel")
+  ?.classList.add("show");
+
+nameEl.textContent = "SIR ALDREN";
 
         setControlsDisabled(false);
 
