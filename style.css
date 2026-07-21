@@ -589,3 +589,66 @@ body {
   visibility: hidden;
   pointer-events: none;
 }
+
+.languages{
+
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+
+    gap:6px;
+}
+
+.lang-title{
+
+    font-family:"Cinzel",serif;
+
+    color:#e8d6a7;
+
+    font-size:.95rem;
+}
+
+.lang-subtitle{
+
+    font-family:"Cinzel",serif;
+
+    color:#cfc4a7;
+
+    font-size:.85rem;
+
+    opacity:.9;
+}
+
+.flags{
+
+    display:flex;
+
+    gap:10px;
+}
+
+.flag-btn{
+
+    width:38px;
+    height:38px;
+
+    border-radius:50%;
+
+    border:2px solid rgba(201,166,74,.6);
+
+    background:rgba(0,0,0,.35);
+
+    cursor:pointer;
+
+    font-size:20px;
+
+    transition:.25s;
+}
+
+.flag-btn:hover{
+
+    transform:scale(1.08);
+
+    border-color:#f0d27c;
+
+    box-shadow:0 0 10px rgba(201,166,74,.45);
+}
