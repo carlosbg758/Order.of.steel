@@ -650,3 +650,62 @@ body {
 
     box-shadow:0 0 10px rgba(201,166,74,.45);
 }
+/* ==========================================================
+   TOP BAR - MÓVIL
+========================================================== */
+
+@media (max-width: 640px) {
+
+  .top-bar {
+    padding: 12px 14px;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .brand {
+    flex-shrink: 0;
+  }
+
+  .top-logo {
+    width: 125px;
+  }
+
+  .top-actions {
+    flex: 1;
+    min-width: 0;
+    justify-content: flex-end;
+  }
+
+  .languages {
+    width: 170px;
+    max-width: 100%;
+    gap: 4px;
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  .lang-title {
+    font-size: 0.58rem;
+    line-height: 1.25;
+    letter-spacing: 0.02em;
+  }
+
+  .lang-subtitle {
+    font-size: 0.50rem;
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+  }
+
+  .flags {
+    gap: 4px;
+    justify-content: flex-end;
+  }
+
+  .flag-btn {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    font-size: 15px;
+    border-width: 1px;
+  }
+}
