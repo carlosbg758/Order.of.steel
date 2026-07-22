@@ -509,14 +509,15 @@ body {
     padding: 10px 12px;
   }
 
-  .send-btn {
-    min-width: 82px;
-    width: auto;
-    padding: 0 10px;
-    font-size: 0.68rem;
-    letter-spacing: 0.07em;
-    flex-shrink: 0;
-  }
+.send-btn {
+  min-width: 78px;
+  width: auto;
+  height: 46px;
+  padding: 0 12px;
+  font-size: 0.62rem;
+  letter-spacing: 0.10em;
+  flex-shrink: 0;
+}
 }
 
 @media (max-width: 380px) {
@@ -785,7 +786,7 @@ body {
   }
 
  .top-logo {
-  width: 125px;
+  width: 144px;
 }
 
 .top-actions {
