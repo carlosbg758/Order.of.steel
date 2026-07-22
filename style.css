@@ -509,15 +509,15 @@ body {
 }
 
 .entry-logo{
-    width:150px;
-    max-width:40vw;
+    width:190px;
+    max-width:48vw;
     margin-bottom:28px;
 }
 
 .entry-title{
     margin:0;
 
-    font-size:2.4rem;
+    font-size:2.5rem;
     letter-spacing:.18em;
     color:#f5efe3;
     text-transform:uppercase;
