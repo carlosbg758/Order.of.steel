@@ -198,15 +198,45 @@ body {
 
 .panel-inner {
   position: relative;
-  background: var(--panel-bg);
-  border: 1px solid var(--gold-dim);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(48, 35, 20, 0.94) 0%,
+      rgba(24, 17, 10, 0.96) 28%,
+      rgba(12, 9, 5, 0.97) 100%
+    ),
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(201, 166, 74, 0.12),
+      transparent 48%
+    );
+
+  border: 1px solid #8a6f2e;
+  border-top-color: #c9a64a;
   border-bottom: none;
-  border-radius: 10px 10px 0 0;
+
+  border-radius: 12px 12px 0 0;
+
   padding: 22px 26px 20px;
-  box-shadow: 0 -6px 40px rgba(0, 0, 0, 0.7),
-    inset 0 1px 0 rgba(201, 166, 74, 0.25);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+
+  box-shadow:
+    0 -12px 45px rgba(0, 0, 0, 0.82),
+    0 -2px 8px rgba(201, 166, 74, 0.12),
+    inset 0 2px 0 rgba(255, 231, 170, 0.14),
+    inset 0 -12px 28px rgba(0, 0, 0, 0.48),
+    inset 10px 0 24px rgba(0, 0, 0, 0.16),
+    inset -10px 0 24px rgba(0, 0, 0, 0.16);
+
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+
+  overflow: visible;
+}
+
+.panel-inner > * {
+  position: relative;
+  z-index: 2;
 }
 
 /* golden corner flourishes */
@@ -679,32 +709,12 @@ body {
     gap:10px;
 }
 
-.flag-btn{
-
-    width:38px;
-    height:38px;
-
-    border-radius:50%;
-
-    border:2px solid rgba(201,166,74,.6);
-
-    background:rgba(0,0,0,.35);
-
-    cursor:pointer;
-
-    font-size:20px;
-
-    transition:.25s;
+.languages-flags{
+    display:block;
+    width:230px;
+    height:auto;
 }
 
-.flag-btn:hover{
-
-    transform:scale(1.08);
-
-    border-color:#f0d27c;
-
-    box-shadow:0 0 10px rgba(201,166,74,.45);
-}
 /* ==========================================================
    TOP BAR - MÓVIL
 ========================================================== */
