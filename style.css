@@ -480,27 +480,42 @@ body {
   .dialogue-panel {
     padding: 0 10px 16px;
   }
+
   .panel-inner {
     padding: 16px 16px 14px;
   }
+
   .crest {
     width: 34px;
     height: 34px;
   }
+
   .knight-name {
     font-size: 0.98rem;
   }
+
   .knight-response {
     font-size: 0.98rem;
     line-height: 1.55;
   }
+
+  .input-row {
+    gap: 7px;
+  }
+
   .player-input {
+    min-width: 0;
     font-size: 0.95rem;
     padding: 10px 12px;
   }
+
   .send-btn {
-    padding: 0 14px;
-    font-size: 0.76rem;
+    min-width: 82px;
+    width: auto;
+    padding: 0 10px;
+    font-size: 0.68rem;
+    letter-spacing: 0.07em;
+    flex-shrink: 0;
   }
 }
 
