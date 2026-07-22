@@ -245,7 +245,7 @@ body {
 
     width:85%;
 
-    max-width:100px;
+    max-width:90px;
 
     height:auto;
 
@@ -256,16 +256,16 @@ body {
 
 .panel-corner-left{
 
-    top:-14px;
+    top:-18px;
 
-    left:-12px;
+    left:-6px;
 }
 
 .panel-corner-right{
 
-    top:-14px;
+    top:-18px;
 
-    right:-12px;
+    right:-6px;
 }
 
 /* golden corner flourishes */
