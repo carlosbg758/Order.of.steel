@@ -709,3 +709,9 @@ body {
     border-width: 1px;
   }
 }
+
+.flag-sprite {
+  display: block;
+  width: auto;
+  height: 100%;
+}
