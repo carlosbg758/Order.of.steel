@@ -239,6 +239,35 @@ body {
   z-index: 2;
 }
 
+.panel-corner{
+
+    position:absolute;
+
+    width:85%;
+
+    max-width:160px;
+
+    height:auto;
+
+    pointer-events:none;
+
+    z-index:5;
+}
+
+.panel-corner-left{
+
+    top:-16px;
+
+    left:-14px;
+}
+
+.panel-corner-right{
+
+    top:-16px;
+
+    right:-14px;
+}
+
 /* golden corner flourishes */
 .panel-inner::before,
 .panel-inner::after {
