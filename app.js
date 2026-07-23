@@ -19,9 +19,7 @@ const DEVICE = {
   mobile: isMobileDevice(),
 };
 
-const SCENE_FOLDER = DEVICE.mobile
-  ? "images/mobile/"
-  : "images/desktop/";
+const SCENE_FOLDER = "images/";
 
 const FALLBACK_SCENE =
   `${SCENE_FOLDER}00escenario.webp`;
