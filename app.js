@@ -155,8 +155,14 @@ async function loadImageScene(scene) {
     const image = new Image();
 
     image.onload = resolve;
-    image.onerror = reject;
-    image.src = scene.src;
+image.onerror = reject;
+
+console.log(
+  "Cargando imagen:",
+  scene.src
+);
+
+image.src = scene.src;
   });
 
   sceneVideo.pause();
