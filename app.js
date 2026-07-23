@@ -51,6 +51,11 @@ const voicePanel =
 const backgroundMusic =
   document.getElementById("backgroundMusic");
 
+function focusInputIfDesktop() {
+  if (!DEVICE.mobile) {
+    inputEl.focus();
+  }
+}
 // ==========================================================
 // ESCENARIOS
 // ==========================================================
@@ -659,10 +664,10 @@ async function handleSend() {
       randomErrorMessage(),
       12
     );
-  } finally {
-    setControlsDisabled(false);
-    inputEl.focus();
-  }
+} finally {
+  setControlsDisabled(false);
+  focusInputIfDesktop();
+}
 }
 // ==========================================================
 // EVENTOS
@@ -732,12 +737,12 @@ window.addEventListener(
 
         setControlsDisabled(false);
 
-        await typeText(
-          responseEl,
-          "Soy Sir Aldren, caballero de Order of Steel. Habla, viajero: ¿qué te trae hasta este lugar?"
-        );
+await typeText(
+  responseEl,
+  "Soy Sir Aldren, caballero de Order of Steel. Habla, viajero: ¿qué te trae hasta este lugar?"
+);
 
-        inputEl.focus();
+focusInputIfDesktop();
       },
       { once: true }
     );
