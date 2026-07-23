@@ -30,6 +30,7 @@ const responseEl = document.getElementById("knight-response");
 const inputEl = document.getElementById("player-input");
 const sendBtn = document.getElementById("send-btn");
 const statusEl = document.getElementById("status");
+const voicePanel = document.querySelector(".voice-panel");
 
 const backgroundMusic =
   document.getElementById("backgroundMusic");
@@ -331,12 +332,21 @@ function typeText(target, text, speed = 16) {
 
 let currentAldrenAudio = null;
 
+function startVoiceAnimation() {
+  voicePanel?.classList.add("speaking");
+}
+
+function stopVoiceAnimation() {
+  voicePanel?.classList.remove("speaking");
+}
+
 function speakWithMicrosoftPablo(text) {
   if (!("speechSynthesis" in window)) {
     console.warn(
       "Este navegador no admite síntesis de voz."
     );
 
+    stopVoiceAnimation();
     return;
   }
 
@@ -365,21 +375,33 @@ function speakWithMicrosoftPablo(text) {
         voice.lang.toLowerCase() === "es-es"
     ) ||
     voices.find((voice) =>
-      voice.lang
-        .toLowerCase()
-        .startsWith("es")
+      voice.lang.toLowerCase().startsWith("es")
     );
 
-if (!spanishVoice) {
-  console.warn(
-    "No se encontró ninguna voz española. Se cancela la reproducción."
-  );
+  if (!spanishVoice) {
+    console.warn(
+      "No se encontró ninguna voz española. Se cancela la reproducción."
+    );
 
-  return;
-}
+    stopVoiceAnimation();
+    return;
+  }
 
-utterance.voice = spanishVoice;
-window.speechSynthesis.speak(utterance);
+  utterance.voice = spanishVoice;
+
+  utterance.onstart = () => {
+    startVoiceAnimation();
+  };
+
+  utterance.onend = () => {
+    stopVoiceAnimation();
+  };
+
+  utterance.onerror = () => {
+    stopVoiceAnimation();
+  };
+
+  window.speechSynthesis.speak(utterance);
 }
 
 async function speakAsAldren(text) {
