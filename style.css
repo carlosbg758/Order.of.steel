@@ -588,108 +588,76 @@ body {
   left: 50%;
   top: 54px;
 
-  width: 280px;
-  height: 150px;
+  width: 230px;
+  height: 110px;
 
   transform: translateX(-50%);
 
   background: radial-gradient(
     ellipse at center,
-    rgba(225, 180, 75, 0.65) 0%,
-    rgba(201, 150, 48, 0.28) 42%,
-    rgba(201, 150, 48, 0) 75%
+    rgba(225, 180, 75, 0.38) 0%,
+    rgba(201, 150, 48, 0.18) 38%,
+    rgba(201, 150, 48, 0) 72%
   );
 
-  filter: blur(18px);
+  filter: blur(16px);
 
   pointer-events: none;
 
   z-index: -1;
 
-  animation:
-    aldrenVoiceGlow 0.8s ease-out infinite;
+  animation: voiceGlow 1.8s ease-in-out infinite;
 }
 
 .voice-panel.speaking .voice-mic {
-  animation:
-    aldrenMicSpeaking 0.45s ease-in-out infinite;
+  animation: micSpeaking 1.8s ease-in-out infinite;
 
   filter:
-    drop-shadow(
-      0 0 14px rgba(255, 220, 130, 0.95)
-    )
-    drop-shadow(
-      0 0 34px rgba(201, 150, 48, 0.8)
-    );
+    drop-shadow(0 0 10px rgba(255, 220, 130, 0.75))
+    drop-shadow(0 0 24px rgba(201, 150, 48, 0.45));
 }
 
 .voice-panel.speaking .voice-lines {
-  animation:
-    aldrenVoiceLines 0.32s ease-in-out
-    infinite alternate;
+  animation: voiceLinesSpeaking 1.8s ease-in-out infinite;
 
   filter:
-    drop-shadow(
-      0 0 12px rgba(255, 214, 110, 0.9)
-    );
+    drop-shadow(0 0 8px rgba(255, 214, 110, 0.48));
 }
 
-@keyframes aldrenMicSpeaking {
+@keyframes micSpeaking {
   0%,
   100% {
-    transform:
-      translate(-50%, -50%)
-      scale(1);
+    transform: translate(-50%, -50%) scale(1);
   }
 
   50% {
-    transform:
-      translate(-50%, -50%)
-      scale(1.12);
+    transform: translate(-50%, -50%) scale(1.035);
   }
 }
 
-@keyframes aldrenVoiceLines {
-  0% {
-    opacity: 0.45;
-
-    transform:
-      translate(-50%, -50%)
-      scale(0.88);
+@keyframes voiceLinesSpeaking {
+  0%,
+  100% {
+    opacity: 0.58;
+    transform: translate(-50%, -50%) scale(0.98);
   }
 
-  100% {
+  50% {
     opacity: 1;
-
-    transform:
-      translate(-50%, -50%)
-      scale(1.15);
+    transform: translate(-50%, -50%) scale(1.025);
   }
 }
 
-@keyframes aldrenVoiceGlow {
-  0% {
-    opacity: 0.95;
-
-    transform:
-      translateX(-50%)
-      scale(0.75);
-  }
-
-  70% {
-    opacity: 0.35;
-
-    transform:
-      translateX(-50%)
-      scale(1.25);
-  }
-
+@keyframes voiceGlow {
+  0%,
   100% {
-    opacity: 0;
+    opacity: 0.45;
+    transform: translateX(-50%) scale(0.96);
+  }
 
-    transform:
-      translateX(-50%)
-      scale(1.45);
+  50% {
+    opacity: 0.95;
+    transform: translateX(-50%) scale(1.05);
   }
 }
 
