@@ -576,6 +576,91 @@ body {
   color: rgba(232, 220, 190, 0.82);
 }
 
+/* ==========================================================
+   ESTADO: SIR ALDREN HABLANDO
+========================================================== */
+
+.voice-panel.speaking::after {
+  content: "";
+
+  position: absolute;
+
+  left: 50%;
+  top: 54px;
+
+  width: 230px;
+  height: 110px;
+
+  transform: translateX(-50%);
+
+  background: radial-gradient(
+    ellipse at center,
+    rgba(225, 180, 75, 0.38) 0%,
+    rgba(201, 150, 48, 0.18) 38%,
+    rgba(201, 150, 48, 0) 72%
+  );
+
+  filter: blur(16px);
+
+  pointer-events: none;
+
+  z-index: -1;
+
+  animation: voiceGlow 1.8s ease-in-out infinite;
+}
+
+.voice-panel.speaking .voice-mic {
+  animation: micSpeaking 1.8s ease-in-out infinite;
+
+  filter:
+    drop-shadow(0 0 10px rgba(255, 220, 130, 0.75))
+    drop-shadow(0 0 24px rgba(201, 150, 48, 0.45));
+}
+
+.voice-panel.speaking .voice-lines {
+  animation: voiceLinesSpeaking 1.8s ease-in-out infinite;
+
+  filter:
+    drop-shadow(0 0 8px rgba(255, 214, 110, 0.48));
+}
+
+@keyframes micSpeaking {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(1.035);
+  }
+}
+
+@keyframes voiceLinesSpeaking {
+  0%,
+  100% {
+    opacity: 0.58;
+    transform: translate(-50%, -50%) scale(0.98);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.025);
+  }
+}
+
+@keyframes voiceGlow {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: translateX(-50%) scale(0.96);
+  }
+
+  50% {
+    opacity: 0.95;
+    transform: translateX(-50%) scale(1.05);
+  }
+}
+
 /* --- Intro fade-in ------------------------------------------------------- */
 
 .dialogue-panel.show {
