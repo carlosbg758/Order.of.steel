@@ -271,18 +271,26 @@ const MUSIC = [
   // "audio/9.Order.mp3",
 ];
 
-function prepareBackgroundMusic() {
-  if (!backgroundMusic) {
-    return Promise.resolve();
+async function prepareBackgroundMusic() {
+  if (!backgroundMusic || MUSIC.length === 0) {
+    return;
   }
 
-  backgroundMusic.src =
+  const randomTrack =
     MUSIC[Math.floor(Math.random() * MUSIC.length)];
 
+  backgroundMusic.src = randomTrack;
   backgroundMusic.volume = 0.2;
   backgroundMusic.loop = true;
 
-  return backgroundMusic.play();
+  try {
+    await backgroundMusic.play();
+  } catch (error) {
+    console.warn(
+      "La música ambiental no pudo iniciarse:",
+      error
+    );
+  }
 }
 
 // ==========================================================
