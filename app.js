@@ -406,8 +406,11 @@ function speakWithMicrosoftPablo(text) {
 
 async function speakAsAldren(text) {
   if (!text || typeof text !== "string") {
+    stopVoiceAnimation();
     return;
   }
+
+  startVoiceAnimation();
 
   // Detiene cualquier voz anterior.
   if ("speechSynthesis" in window) {
