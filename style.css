@@ -825,3 +825,100 @@ body {
   max-width: 100%;
   height: auto;
 }
+
+/* ==========================================================
+   VOICE PANEL
+========================================================== */
+
+.voice-panel{
+
+    position:absolute;
+
+    left:50%;
+
+    top:-105px;
+
+    transform:translateX(-50%);
+
+    width:420px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    z-index:20;
+}
+
+.voice-btn{
+
+    position:relative;
+
+    width:220px;
+
+    height:220px;
+
+    border:none;
+
+    background:none;
+
+    padding:0;
+
+    cursor:pointer;
+}
+
+.voice-lines{
+
+    position:absolute;
+
+    left:50%;
+
+    top:50%;
+
+    transform:translate(-50%,-50%);
+
+    width:330px;
+
+    pointer-events:none;
+}
+
+.voice-mic{
+
+    position:absolute;
+
+    left:50%;
+
+    top:50%;
+
+    transform:translate(-50%,-50%);
+
+    width:132px;
+}
+
+.voice-text{
+
+    margin-top:-18px;
+
+    text-align:center;
+}
+
+.voice-title{
+
+    font-family:"Cinzel",serif;
+
+    font-size:1.05rem;
+
+    color:#f0e3be;
+}
+
+.voice-subtitle{
+
+    margin-top:4px;
+
+    font-family:"EB Garamond",serif;
+
+    font-size:.95rem;
+
+    color:#d2c3a3;
+}
