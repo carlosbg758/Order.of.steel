@@ -606,61 +606,90 @@ body {
 
   z-index: -1;
 
-  animation: voiceGlow 0.8s ease-out infinite;
+  animation:
+    aldrenVoiceGlow 0.8s ease-out infinite;
 }
 
 .voice-panel.speaking .voice-mic {
-  animation: micSpeaking 0.45s ease-in-out infinite;
+  animation:
+    aldrenMicSpeaking 0.45s ease-in-out infinite;
 
   filter:
-    drop-shadow(0 0 14px rgba(255, 220, 130, 0.95))
-    drop-shadow(0 0 34px rgba(201, 150, 48, 0.8));
+    drop-shadow(
+      0 0 14px rgba(255, 220, 130, 0.95)
+    )
+    drop-shadow(
+      0 0 34px rgba(201, 150, 48, 0.8)
+    );
 }
 
 .voice-panel.speaking .voice-lines {
-  animation: voiceLinesSpeaking 0.32s ease-in-out infinite alternate;
+  animation:
+    aldrenVoiceLines 0.32s ease-in-out
+    infinite alternate;
 
   filter:
-    drop-shadow(0 0 12px rgba(255, 214, 110, 0.9));
+    drop-shadow(
+      0 0 12px rgba(255, 214, 110, 0.9)
+    );
 }
 
-@keyframes micSpeaking {
+@keyframes aldrenMicSpeaking {
   0%,
   100% {
-    transform: translate(-50%, -50%) scale(1);
+    transform:
+      translate(-50%, -50%)
+      scale(1);
   }
 
   50% {
-    transform: translate(-50%, -50%) scale(1.12);
+    transform:
+      translate(-50%, -50%)
+      scale(1.12);
   }
 }
 
-@keyframes voiceLinesSpeaking {
+@keyframes aldrenVoiceLines {
   0% {
     opacity: 0.45;
-    transform: translate(-50%, -50%) scale(0.88);
+
+    transform:
+      translate(-50%, -50%)
+      scale(0.88);
   }
 
   100% {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1.15);
+
+    transform:
+      translate(-50%, -50%)
+      scale(1.15);
   }
 }
 
-@keyframes voiceGlow {
+@keyframes aldrenVoiceGlow {
   0% {
     opacity: 0.95;
-    transform: translateX(-50%) scale(0.75);
+
+    transform:
+      translateX(-50%)
+      scale(0.75);
   }
 
   70% {
     opacity: 0.35;
-    transform: translateX(-50%) scale(1.25);
+
+    transform:
+      translateX(-50%)
+      scale(1.25);
   }
 
   100% {
     opacity: 0;
-    transform: translateX(-50%) scale(1.45);
+
+    transform:
+      translateX(-50%)
+      scale(1.45);
   }
 }
 
