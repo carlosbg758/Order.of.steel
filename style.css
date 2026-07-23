@@ -742,7 +742,7 @@ body {
 
     color:#e8d6a7;
 
-    font-size:.95rem;
+    font-size:.0.53rem;
 }
 
 .lang-subtitle{
@@ -751,7 +751,7 @@ body {
 
     color:#cfc4a7;
 
-    font-size:.85rem;
+    font-size:.46rem;
 
     opacity:.9;
 }
@@ -765,7 +765,7 @@ body {
 
 .languages-flags{
     display:block;
-    width:230px;
+    width:200px;
     height:auto;
 }
 
