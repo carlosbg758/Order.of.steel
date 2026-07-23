@@ -461,6 +461,7 @@ async function speakAsAldren(text) {
     audio.addEventListener(
       "ended",
       () => {
+        stopVoiceAnimation();
         URL.revokeObjectURL(audioUrl);
 
         if (currentAldrenAudio === audio) {
@@ -473,6 +474,7 @@ async function speakAsAldren(text) {
     audio.addEventListener(
       "error",
       () => {
+        stopVoiceAnimation();
         URL.revokeObjectURL(audioUrl);
 
         if (currentAldrenAudio === audio) {
@@ -499,7 +501,6 @@ if ("speechSynthesis" in window) {
       window.speechSynthesis.getVoices();
     };
 }
-
 // ==========================================================
 // ESTADO DE LA INTERFAZ
 // ==========================================================
@@ -570,17 +571,24 @@ async function generateResponse(userText) {
   try {
     result = await response.json();
   } catch {
-    throw new Error("Respuesta inválida.");
+    throw new Error(
+      "El servidor devolvió una respuesta inválida."
+    );
   }
 
   if (!response.ok || !result?.ok) {
-    throw new Error("Error del servidor.");
+    throw new Error(
+      result?.error ||
+      "Se produjo un error en el servidor."
+    );
   }
 
   const reply = result.reply?.trim();
 
   if (!reply) {
-    throw new Error("Respuesta vacía.");
+    throw new Error(
+      "Sir Aldren no ha proporcionado una respuesta."
+    );
   }
 
   conversation.push({
@@ -594,7 +602,7 @@ async function generateResponse(userText) {
 
   await typeText(responseEl, reply);
 
-  speakAsAldren(reply);
+  void speakAsAldren(reply);
 }
 
 async function handleSend() {
@@ -611,7 +619,10 @@ async function handleSend() {
   try {
     await generateResponse(text);
   } catch (error) {
-    console.error(error);
+    console.error(
+      "Error al generar la respuesta:",
+      error
+    );
 
     clearLoading();
 
@@ -625,7 +636,6 @@ async function handleSend() {
     inputEl.focus();
   }
 }
-
 // ==========================================================
 // EVENTOS
 // ==========================================================
@@ -656,27 +666,41 @@ window.addEventListener(
 
     setControlsDisabled(true);
 
+    if (!entryScreen || !enterButton) {
+      console.error(
+        "No se encontró la pantalla de entrada o el botón de acceso."
+      );
+
+      setControlsDisabled(false);
+      return;
+    }
+
     enterButton.addEventListener(
       "click",
       async () => {
         enterButton.disabled = true;
 
- if (navigator.vibrate) {
-  navigator.vibrate(25);
-}
+        if (navigator.vibrate) {
+          navigator.vibrate(25);
+        }
+
         await prepareBackgroundMusic();
 
-        entryScreen.classList.add("entry-screen-hidden");
+        entryScreen.classList.add(
+          "entry-screen-hidden"
+        );
 
         await loadRandomScene();
 
-await new Promise(resolve => setTimeout(resolve, 600));
+        await new Promise((resolve) =>
+          setTimeout(resolve, 600)
+        );
 
-document
-  .querySelector(".dialogue-panel")
-  ?.classList.add("show");
+        document
+          .querySelector(".dialogue-panel")
+          ?.classList.add("show");
 
-nameEl.textContent = "SIR ALDREN";
+        nameEl.textContent = "SIR ALDREN";
 
         setControlsDisabled(false);
 
