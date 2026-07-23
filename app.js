@@ -10,7 +10,9 @@ const MAX_HISTORY_MESSAGES = 10;
 // ==========================================================
 
 function isMobileDevice() {
-  return window.matchMedia("(max-width: 768px)").matches;
+  return window.matchMedia(
+    "(max-width: 768px)"
+  ).matches;
 }
 
 const DEVICE = {
@@ -21,20 +23,39 @@ const SCENE_FOLDER = DEVICE.mobile
   ? "images/mobile/"
   : "images/desktop/";
 
+const FALLBACK_SCENE =
+  `${SCENE_FOLDER}00escenario.webp`;
+
 // ==========================================================
 // ELEMENTOS DE LA INTERFAZ
 // ==========================================================
 
-const nameEl = document.getElementById("knight-name");
-const responseEl = document.getElementById("knight-response");
-const inputEl = document.getElementById("player-input");
-const sendBtn = document.getElementById("send-btn");
-const statusEl = document.getElementById("status");
-const voicePanel = document.querySelector(".voice-panel");
+const nameEl =
+  document.getElementById("knight-name");
+
+const responseEl =
+  document.getElementById("knight-response");
+
+const inputEl =
+  document.getElementById("player-input");
+
+const sendBtn =
+  document.getElementById("send-btn");
+
+const statusEl =
+  document.getElementById("status");
+
+const voicePanel =
+  document.querySelector(".voice-panel");
 
 const backgroundMusic =
   document.getElementById("backgroundMusic");
 
+function focusInputIfDesktop() {
+  if (!DEVICE.mobile) {
+    inputEl.focus();
+  }
+}
 // ==========================================================
 // ESCENARIOS
 // ==========================================================
@@ -51,7 +72,7 @@ const sceneLoader =
 const SCENES = [
   {
     type: "image",
-    src: SCENE_FOLDER + "00escenario.webp",
+    src: `${SCENE_FOLDER}00escenario.webp`,
   },
   {
     type: "video",
@@ -67,31 +88,31 @@ const SCENES = [
   },
   {
     type: "image",
-    src: SCENE_FOLDER + "02escenario.webp",
+    src: `${SCENE_FOLDER}02escenario.webp`,
   },
   {
     type: "image",
-    src: SCENE_FOLDER + "03escenario.webp",
+    src: `${SCENE_FOLDER}03escenario.webp`,
   },
   {
     type: "image",
-    src: SCENE_FOLDER + "04escenario.webp",
+    src: `${SCENE_FOLDER}04escenario.webp`,
   },
   {
     type: "image",
-    src: SCENE_FOLDER + "05escenario.webp",
+    src: `${SCENE_FOLDER}05escenario.webp`,
   },
   {
     type: "image",
-    src: SCENE_FOLDER + "06escenario.webp",
+    src: `${SCENE_FOLDER}06escenario.webp`,
   },
   {
     type: "image",
-    src: SCENE_FOLDER + "07escenario.webp",
+    src: `${SCENE_FOLDER}07escenario.webp`,
   },
   {
     type: "image",
-    src: SCENE_FOLDER + "08escenario.webp",
+    src: `${SCENE_FOLDER}08escenario.webp`,
   },
 ];
 
@@ -113,11 +134,14 @@ function showFallbackScene() {
   }
 
   sceneVideo.pause();
+  sceneVideo.removeAttribute("src");
+  sceneVideo.load();
   sceneVideo.style.display = "none";
+  sceneVideo.style.opacity = "0";
 
   sceneImage.style.display = "block";
- sceneImage.style.backgroundImage =
-  `url("${SCENE_FOLDER}00escenario.webp")`;
+  sceneImage.style.backgroundImage =
+    `url("${FALLBACK_SCENE}")`;
   sceneImage.style.opacity = "0";
 
   requestAnimationFrame(() => {
@@ -174,6 +198,7 @@ async function loadVideoScene(scene) {
 
     const handleError = () => {
       cleanup();
+
       reject(
         new Error("No se pudo cargar el vídeo.")
       );
@@ -228,10 +253,10 @@ async function loadRandomScene() {
     return;
   }
 
-  const scene =
-    SCENES[
-      Math.floor(Math.random() * SCENES.length)
-    ];
+  const randomIndex =
+    Math.floor(Math.random() * SCENES.length);
+
+  const scene = SCENES[randomIndex];
 
   try {
     if (scene.type === "video") {
@@ -265,18 +290,26 @@ const MUSIC = [
   // "audio/9.Order.mp3",
 ];
 
-function prepareBackgroundMusic() {
-  if (!backgroundMusic) {
-    return Promise.resolve();
+async function prepareBackgroundMusic() {
+  if (!backgroundMusic || MUSIC.length === 0) {
+    return;
   }
 
-  backgroundMusic.src =
+  const randomTrack =
     MUSIC[Math.floor(Math.random() * MUSIC.length)];
 
+  backgroundMusic.src = randomTrack;
   backgroundMusic.volume = 0.2;
   backgroundMusic.loop = true;
 
-  return backgroundMusic.play();
+  try {
+    await backgroundMusic.play();
+  } catch (error) {
+    console.warn(
+      "La música ambiental no pudo iniciarse:",
+      error
+    );
+  }
 }
 
 // ==========================================================
@@ -631,10 +664,10 @@ async function handleSend() {
       randomErrorMessage(),
       12
     );
-  } finally {
-    setControlsDisabled(false);
-    inputEl.focus();
-  }
+} finally {
+  setControlsDisabled(false);
+  focusInputIfDesktop();
+}
 }
 // ==========================================================
 // EVENTOS
@@ -704,12 +737,12 @@ window.addEventListener(
 
         setControlsDisabled(false);
 
-        await typeText(
-          responseEl,
-          "Soy Sir Aldren, caballero de Order of Steel. Habla, viajero: ¿qué te trae hasta este lugar?"
-        );
+await typeText(
+  responseEl,
+  "Soy Sir Aldren, caballero de Order of Steel. Habla, viajero: ¿qué te trae hasta este lugar?"
+);
 
-        inputEl.focus();
+focusInputIfDesktop();
       },
       { once: true }
     );
