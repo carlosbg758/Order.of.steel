@@ -20,8 +20,8 @@ const DEVICE = {
 };
 
 const SCENE_FOLDER = DEVICE.mobile
-  ? "public/images/mobile/"
-  : "public/images/desktop/";
+  ? "images/mobile/"
+  : "images/desktop/";
 
 const FALLBACK_SCENE =
   `${SCENE_FOLDER}00escenario.webp`;
