@@ -299,7 +299,7 @@ async function prepareBackgroundMusic() {
     MUSIC[Math.floor(Math.random() * MUSIC.length)];
 
   backgroundMusic.src = randomTrack;
-  backgroundMusic.volume = 0.2;
+  backgroundMusic.volume = 0.08;
   backgroundMusic.loop = true;
 
   try {
