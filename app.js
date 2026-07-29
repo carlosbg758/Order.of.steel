@@ -68,7 +68,11 @@ if (voiceRecognition) {
 
 voiceRecognition.onresult = (event) => {
   const text =
-    event.results[0][0].transcript;
+    event.results[0][0].transcript.trim();
+
+  if (!text) {
+    return;
+  }
 
   inputEl.value = text;
 
@@ -76,8 +80,9 @@ voiceRecognition.onresult = (event) => {
     "📝 Texto reconocido:",
     text
   );
-};
-}
+
+  void handleSend();
+};}
 
 const backgroundMusic =
   document.getElementById("backgroundMusic");
