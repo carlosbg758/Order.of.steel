@@ -400,12 +400,15 @@ function typeText(target, text, speed = 16) {
 // ==========================================================
 
 let currentAldrenAudio = null;
+let isAldrenSpeaking = false;
 
 function startVoiceAnimation() {
+  isAldrenSpeaking = true;
   voicePanel?.classList.add("speaking");
 }
 
 function stopVoiceAnimation() {
+  isAldrenSpeaking = false;
   voicePanel?.classList.remove("speaking");
 }
 
@@ -713,6 +716,13 @@ voiceBtn?.addEventListener(
   "pointerdown",
   (event) => {
     event.preventDefault();
+    if (sendBtn.disabled || isAldrenSpeaking) {
+  console.log(
+    "⚔️ Sir Aldren todavía está hablando"
+  );
+
+  return;
+}
 
     if (!voiceRecognition) {
       console.warn(
