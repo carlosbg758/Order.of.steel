@@ -81,7 +81,7 @@ voiceRecognition.onresult = (event) => {
     text
   );
 
-  void handleSend();
+  void handleSend(true);
 };}
 
 const backgroundMusic =
@@ -674,12 +674,12 @@ async function generateResponse(userText) {
   void speakAsAldren(reply);
 }
 
-async function handleSend() {
+async function handleSend(forceSend = false) {
   const text = inputEl.value.trim();
 
-  if (!text || sendBtn.disabled) {
-    return;
-  }
+if (!text || (sendBtn.disabled && !forceSend)) {
+  return;
+}
 
   inputEl.value = "";
 
