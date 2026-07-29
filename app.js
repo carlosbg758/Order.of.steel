@@ -48,6 +48,9 @@ const statusEl =
 const voicePanel =
   document.querySelector(".voice-panel");
 
+const voiceBtn =
+  document.getElementById("voiceBtn");
+
 const backgroundMusic =
   document.getElementById("backgroundMusic");
 
@@ -672,6 +675,13 @@ async function handleSend() {
 // ==========================================================
 // EVENTOS
 // ==========================================================
+
+voiceBtn?.addEventListener(
+  "click",
+  () => {
+    console.log("🎤 Micrófono pulsado");
+  }
+);
 
 sendBtn.addEventListener(
   "click",
