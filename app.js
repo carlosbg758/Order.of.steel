@@ -677,9 +677,27 @@ async function handleSend() {
 // ==========================================================
 
 voiceBtn?.addEventListener(
-  "click",
+  "pointerdown",
+  (event) => {
+    event.preventDefault();
+
+    console.log("🎤 Empezar a escuchar");
+  }
+);
+
+voiceBtn?.addEventListener(
+  "pointerup",
+  (event) => {
+    event.preventDefault();
+
+    console.log("🎤 Dejar de escuchar");
+  }
+);
+
+voiceBtn?.addEventListener(
+  "pointercancel",
   () => {
-    console.log("🎤 Micrófono pulsado");
+    console.log("🎤 Escucha cancelada");
   }
 );
 
