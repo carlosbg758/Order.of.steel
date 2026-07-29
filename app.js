@@ -734,7 +734,22 @@ voiceBtn?.addEventListener(
   (event) => {
     event.preventDefault();
 
-    console.log("🎤 Dejar de escuchar");
+    if (!voiceRecognition) {
+      return;
+    }
+
+    try {
+      voiceRecognition.stop();
+
+      console.log(
+        "🎤 Micrófono detenido"
+      );
+    } catch (error) {
+      console.warn(
+        "No se pudo detener el reconocimiento de voz:",
+        error
+      );
+    }
   }
 );
 
