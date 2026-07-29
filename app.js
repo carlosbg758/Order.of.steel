@@ -690,7 +690,17 @@ voiceBtn?.addEventListener(
   (event) => {
     event.preventDefault();
 
-    console.log("🎤 Empezar a escuchar");
+    if (!voiceRecognition) {
+      console.warn(
+        "Este navegador no admite reconocimiento de voz."
+      );
+
+      return;
+    }
+
+    console.log(
+      "✅ Reconocimiento de voz disponible"
+    );
   }
 );
 
