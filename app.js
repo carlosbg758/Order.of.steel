@@ -66,23 +66,24 @@ if (voiceRecognition) {
   voiceRecognition.interimResults = false;
   voiceRecognition.maxAlternatives = 1;
 
-voiceRecognition.onresult = (event) => {
-  const text =
-    event.results[0][0].transcript.trim();
+  voiceRecognition.onresult = (event) => {
+    const text =
+      event.results[0][0].transcript.trim();
 
-  if (!text) {
-    return;
-  }
+    if (!text) {
+      return;
+    }
 
-  inputEl.value = text;
+    inputEl.value = text;
 
-  console.log(
-    "📝 Texto reconocido:",
-    text
-  );
+    console.log(
+      "📝 Texto reconocido:",
+      text
+    );
 
-  void handleSend(true);
-};}
+    void handleSend(true);
+  };
+}
 
 const backgroundMusic =
   document.getElementById("backgroundMusic");
@@ -92,6 +93,7 @@ function focusInputIfDesktop() {
     inputEl.focus();
   }
 }
+
 // ==========================================================
 // ESCENARIOS
 // ==========================================================
@@ -352,13 +354,17 @@ async function prepareBackgroundMusic() {
 }
 
 function duckBackgroundMusic() {
-  if (!backgroundMusic) return;
+  if (!backgroundMusic) {
+    return;
+  }
 
   backgroundMusic.volume = musicDuckedVolume;
 }
 
 function restoreBackgroundMusic() {
-  if (!backgroundMusic) return;
+  if (!backgroundMusic) {
+    return;
+  }
 
   backgroundMusic.volume = musicNormalVolume;
 }
@@ -433,6 +439,7 @@ function speakWithMicrosoftPablo(text) {
       "Este navegador no admite síntesis de voz."
     );
 
+    restoreBackgroundMusic();
     stopVoiceAnimation();
     return;
   }
@@ -470,6 +477,7 @@ function speakWithMicrosoftPablo(text) {
       "No se encontró ninguna voz española. Se cancela la reproducción."
     );
 
+    restoreBackgroundMusic();
     stopVoiceAnimation();
     return;
   }
@@ -477,14 +485,17 @@ function speakWithMicrosoftPablo(text) {
   utterance.voice = spanishVoice;
 
   utterance.onstart = () => {
+    duckBackgroundMusic();
     startVoiceAnimation();
   };
 
   utterance.onend = () => {
+    restoreBackgroundMusic();
     stopVoiceAnimation();
   };
 
   utterance.onerror = () => {
+    restoreBackgroundMusic();
     stopVoiceAnimation();
   };
 
@@ -493,10 +504,12 @@ function speakWithMicrosoftPablo(text) {
 
 async function speakAsAldren(text) {
   if (!text || typeof text !== "string") {
+    restoreBackgroundMusic();
     stopVoiceAnimation();
     return;
   }
 
+  duckBackgroundMusic();
   startVoiceAnimation();
 
   // Detiene cualquier voz anterior.
@@ -548,6 +561,7 @@ async function speakAsAldren(text) {
     audio.addEventListener(
       "ended",
       () => {
+        restoreBackgroundMusic();
         stopVoiceAnimation();
         URL.revokeObjectURL(audioUrl);
 
@@ -561,6 +575,7 @@ async function speakAsAldren(text) {
     audio.addEventListener(
       "error",
       () => {
+        restoreBackgroundMusic();
         stopVoiceAnimation();
         URL.revokeObjectURL(audioUrl);
 
@@ -588,6 +603,7 @@ if ("speechSynthesis" in window) {
       window.speechSynthesis.getVoices();
     };
 }
+
 // ==========================================================
 // ESTADO DE LA INTERFAZ
 // ==========================================================
@@ -695,9 +711,12 @@ async function generateResponse(userText) {
 async function handleSend(forceSend = false) {
   const text = inputEl.value.trim();
 
-if (!text || (sendBtn.disabled && !forceSend)) {
-  return;
-}
+  if (
+    !text ||
+    (sendBtn.disabled && !forceSend)
+  ) {
+    return;
+  }
 
   inputEl.value = "";
 
@@ -718,11 +737,12 @@ if (!text || (sendBtn.disabled && !forceSend)) {
       randomErrorMessage(),
       12
     );
-} finally {
-  setControlsDisabled(false);
-  focusInputIfDesktop();
+  } finally {
+    setControlsDisabled(false);
+    focusInputIfDesktop();
+  }
 }
-}
+
 // ==========================================================
 // EVENTOS
 // ==========================================================
@@ -731,13 +751,17 @@ voiceBtn?.addEventListener(
   "pointerdown",
   (event) => {
     event.preventDefault();
-    if (sendBtn.disabled || isAldrenSpeaking) {
-  console.log(
-    "⚔️ Sir Aldren todavía está hablando"
-  );
 
-  return;
-}
+    if (
+      sendBtn.disabled ||
+      isAldrenSpeaking
+    ) {
+      console.log(
+        "⚔️ Sir Aldren todavía está hablando"
+      );
+
+      return;
+    }
 
     if (!voiceRecognition) {
       console.warn(
@@ -761,6 +785,7 @@ voiceBtn?.addEventListener(
     }
   }
 );
+
 voiceBtn?.addEventListener(
   "pointerup",
   (event) => {
@@ -788,7 +813,9 @@ voiceBtn?.addEventListener(
 voiceBtn?.addEventListener(
   "pointercancel",
   () => {
-    console.log("🎤 Escucha cancelada");
+    console.log(
+      "🎤 Escucha cancelada"
+    );
   }
 );
 
@@ -856,12 +883,12 @@ window.addEventListener(
 
         setControlsDisabled(false);
 
-await typeText(
-  responseEl,
-  "Soy Sir Aldren, caballero de Order of Steel. Habla, viajero: ¿qué te trae hasta este lugar?"
-);
+        await typeText(
+          responseEl,
+          "Soy Sir Aldren, caballero de Order of Steel. Habla, viajero: ¿qué te trae hasta este lugar?"
+        );
 
-focusInputIfDesktop();
+        focusInputIfDesktop();
       },
       { once: true }
     );
