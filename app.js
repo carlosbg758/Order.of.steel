@@ -326,6 +326,9 @@ const MUSIC = [
   // "audio/9.Order.mp3",
 ];
 
+let musicNormalVolume = 0.08;
+let musicDuckedVolume = 0.02;
+
 async function prepareBackgroundMusic() {
   if (!backgroundMusic || MUSIC.length === 0) {
     return;
@@ -335,7 +338,7 @@ async function prepareBackgroundMusic() {
     MUSIC[Math.floor(Math.random() * MUSIC.length)];
 
   backgroundMusic.src = randomTrack;
-  backgroundMusic.volume = 0.08;
+  backgroundMusic.volume = musicNormalVolume;
   backgroundMusic.loop = true;
 
   try {
@@ -346,6 +349,18 @@ async function prepareBackgroundMusic() {
       error
     );
   }
+}
+
+function duckBackgroundMusic() {
+  if (!backgroundMusic) return;
+
+  backgroundMusic.volume = musicDuckedVolume;
+}
+
+function restoreBackgroundMusic() {
+  if (!backgroundMusic) return;
+
+  backgroundMusic.volume = musicNormalVolume;
 }
 
 // ==========================================================
