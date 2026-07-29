@@ -51,6 +51,15 @@ const voicePanel =
 const voiceBtn =
   document.getElementById("voiceBtn");
 
+const SpeechRecognition =
+  window.SpeechRecognition ||
+  window.webkitSpeechRecognition;
+
+const voiceRecognition =
+  SpeechRecognition
+    ? new SpeechRecognition()
+    : null;
+
 const backgroundMusic =
   document.getElementById("backgroundMusic");
 
