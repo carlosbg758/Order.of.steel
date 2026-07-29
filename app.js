@@ -60,6 +60,13 @@ const voiceRecognition =
     ? new SpeechRecognition()
     : null;
 
+if (voiceRecognition) {
+  voiceRecognition.lang = "es-ES";
+  voiceRecognition.continuous = false;
+  voiceRecognition.interimResults = false;
+  voiceRecognition.maxAlternatives = 1;
+}
+
 const backgroundMusic =
   document.getElementById("backgroundMusic");
 
