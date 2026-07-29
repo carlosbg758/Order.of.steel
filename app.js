@@ -65,6 +65,16 @@ if (voiceRecognition) {
   voiceRecognition.continuous = false;
   voiceRecognition.interimResults = false;
   voiceRecognition.maxAlternatives = 1;
+
+  voiceRecognition.onresult = (event) => {
+    const text =
+      event.results[0][0].transcript;
+
+    console.log(
+      "📝 Texto reconocido:",
+      text
+    );
+  };
 }
 
 const backgroundMusic =
