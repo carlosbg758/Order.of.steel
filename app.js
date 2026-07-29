@@ -715,12 +715,20 @@ voiceBtn?.addEventListener(
       return;
     }
 
-    console.log(
-      "✅ Reconocimiento de voz disponible"
-    );
+    try {
+      voiceRecognition.start();
+
+      console.log(
+        "🎤 Micrófono activado"
+      );
+    } catch (error) {
+      console.warn(
+        "No se pudo iniciar el reconocimiento de voz:",
+        error
+      );
+    }
   }
 );
-
 voiceBtn?.addEventListener(
   "pointerup",
   (event) => {
