@@ -797,9 +797,13 @@ body {
 }
 
 .entry-logo {
-  width: 190px;
-  max-width: 48vw;
-  margin-bottom: 28px;
+  display: block;
+
+  width: 155px;
+  max-width: 40vw;
+  height: auto;
+
+  margin: 0 auto 30px;
 }
 
 .entry-title {
