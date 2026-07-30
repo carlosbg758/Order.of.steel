@@ -1075,3 +1075,23 @@ body {
     font-size: 0.7rem;
   }
 }
+
+/* ==========================================================
+   OCULTAR INTERFAZ DURANTE LA PORTADA
+========================================================== */
+
+body:has(.entry-screen:not(.entry-screen-hidden)) .top-bar,
+body:has(.entry-screen:not(.entry-screen-hidden)) .dialogue-panel,
+body:has(.entry-screen:not(.entry-screen-hidden)) .vignette {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.top-bar,
+.dialogue-panel,
+.vignette {
+  transition:
+    opacity 0.5s ease,
+    visibility 0.5s ease;
+}
