@@ -577,39 +577,53 @@ body {
 }
 
 /* ==========================================================
-   WAVE UNDER VOICE BUTTON (TEST)
+   WAVE UNDER VOICE BUTTON
 ========================================================== */
 
 .voice-wave {
-  width: 130px;
-  height: 10px;
+  width: 150px;
+  height: 22px;
 
-  margin-top: -4px;
-  margin-bottom: 10px;
+  margin-top: -2px;
+  margin-bottom: 8px;
 
   align-self: center;
 
-  opacity: 0.75;
+  overflow: hidden;
 
-  background:
-    repeating-radial-gradient(
-      circle at 0 50%,
-      transparent 0 7px,
-      rgba(255,255,255,.9) 7px 8px,
-      transparent 8px 16px
-    );
+  opacity: 0.82;
 
-  background-size: 32px 10px;
-
-  animation: waveFlow 1.8s linear infinite;
+  filter:
+    drop-shadow(0 0 3px rgba(255, 255, 255, 0.45))
+    drop-shadow(0 0 7px rgba(201, 150, 48, 0.22));
 }
 
-@keyframes waveFlow {
+.voice-wave-svg {
+  display: block;
+
+  width: 300px;
+  height: 22px;
+
+  animation: voiceWaveMove 2.4s linear infinite;
+}
+
+.voice-wave-path {
+  fill: none;
+
+  stroke: rgba(245, 235, 210, 0.92);
+  stroke-width: 1.6;
+
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@keyframes voiceWaveMove {
   from {
-    background-position-x: 0;
+    transform: translateX(0);
   }
+
   to {
-    background-position-x: 32px;
+    transform: translateX(150px);
   }
 }
 
