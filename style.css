@@ -795,15 +795,10 @@ body {
 
   text-align: center;
 }
-
 .entry-logo {
-  display: block;
-
-  width: 155px;
-  max-width: 40vw;
-  height: auto;
-
-  margin: 0 auto 30px;
+  width: 190px;
+  max-width: 48vw;
+  margin-bottom: 28px;
 }
 
 .entry-title {
@@ -1038,6 +1033,9 @@ body {
 
   font-size: 0.75rem;
   line-height: 1.3;
+}
+
+/* CIERRA @media (max-width: 640px) */
 }
 
 @media (max-width: 380px) {
