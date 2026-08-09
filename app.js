@@ -701,11 +701,11 @@ async function generateResponse(userText) {
 
   trimConversationHistory();
 
-  clearLoading();
+clearLoading();
 
-  await typeText(responseEl, reply);
+void speakAsAldren(reply);
 
-  void speakAsAldren(reply);
+await typeText(responseEl, reply);
 }
 
 async function handleSend(forceSend = false) {
