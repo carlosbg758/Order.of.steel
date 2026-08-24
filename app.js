@@ -354,8 +354,8 @@ const MUSIC = [
   // "audio/9.Order.mp3",
 ];
 
-let musicNormalVolume = 0.08;
-let musicDuckedVolume = 0.02;
+let musicNormalVolume = 0.05;
+let musicDuckedVolume = 0.01;
 
 async function prepareBackgroundMusic() {
   if (!backgroundMusic || MUSIC.length === 0) {
