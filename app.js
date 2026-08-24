@@ -107,7 +107,7 @@ const sceneVideo =
 const sceneLoader =
   document.getElementById("sceneLoader");
 
-const SCENES = [
+const DESKTOP_SCENES = [
   {
     type: "image",
     src: `${SCENE_FOLDER}00escenario.webp`,
@@ -153,6 +153,32 @@ const SCENES = [
     src: `${SCENE_FOLDER}08escenario.webp`,
   },
 ];
+
+const MOBILE_SCENES = [
+  "00escenario.webp",
+  "01escenario.webp",
+  "03escenario.webp",
+  "04escenario.webp",
+  "05escenario.webp",
+  "06escenario.webp",
+  "07escenario.webp",
+  "08escenario.webp",
+  "09escenario.webp",
+  "10escenario.webp",
+  "11escenario.webp",
+  "12escenario.webp",
+  "13escenario.webp",
+  "14escenario.webp",
+  "15escenario.webp",
+  "16escenario.webp",
+].map((file) => ({
+  type: "image",
+  src: `${SCENE_FOLDER}${file}`,
+}));
+
+const SCENES = window.matchMedia("(max-width: 768px)").matches
+  ? MOBILE_SCENES
+  : DESKTOP_SCENES;
 
 function hideSceneLoader() {
   if (!sceneLoader) {
