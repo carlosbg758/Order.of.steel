@@ -1095,3 +1095,14 @@ body:has(.entry-screen:not(.entry-screen-hidden)) .vignette {
     opacity 0.5s ease,
     visibility 0.5s ease;
 }
+
+
+/* ==========================================================
+   MÓVIL — OCULTAR VOZ MIENTRAS SE ESCRIBE
+========================================================== */
+
+@media (max-width: 640px) {
+  body:has(.player-input:focus) .voice-panel {
+    display: none;
+  }
+}
